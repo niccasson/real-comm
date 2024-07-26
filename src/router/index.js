@@ -7,6 +7,14 @@ const routes = [
         component: AppLayout,
         children: [
             {
+                path: '/home',
+                name: 'Home',
+                meta: {
+                    breadcrumb: []
+                },
+                component: () => import('@/views/pages/Home.vue')
+            },
+            {
                 path: '/',
                 name: 'SaaS',
                 meta: {
