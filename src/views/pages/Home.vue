@@ -3,7 +3,6 @@ import { computed, ref } from 'vue';
 
 import { useRouter } from 'vue-router';
 import AppConfig from '@/layout/AppConfig.vue';
-// import Fluid from '@/layout/Fluid.vue';
 import { useLayout } from '@/layout/composables/layout';
 
 const { layoutConfig } = useLayout();
@@ -83,28 +82,15 @@ const scrollTo = ($element) => {
                         </div>
                     </div>
                 </div>
-
-                <Fluid>
-                    <InputText v-model="value" type="text" />
-                </Fluid>
-
                 <div class="flex flex-column lg:flex-row gap-5 align-items-center justify-content-between px-5 sm:px-8 py-8 overflow-hidden">
-                    <!-- <div class="flex-1">
-                        <div class="text-4xl font-bold">Join the Prime Community</div>
-                        <Button label="Join Now" class="p-button-raised"></Button>
-                    </div> -->
-                    <Fluid>
-                        <InputText v-model="value" type="text" />
-                    </Fluid>
-                    
-                    <!-- <div class="flex-1 fadein animation-duration-1000">
+                    <div class="flex-1 fadein animation-duration-1000">
                         <h1 class="font-bold text-7xl mt-0 mb-5">PrimeTek Presents Verona</h1>
                         <p class="text-3xl mb-5 line-height-3">Minimal layout inspired by a beautiful city</p>
                         <Button label="TRY NOW"></Button>
-                    </div> -->
-                    <!-- <div class="flex-1">
+                    </div>
+                    <div class="flex-1">
                         <img alt="intro image" src="/demo/images/landing/screen.jpg" class="fadeinright animation-ease-in-out animation-duration-1000 w-full border-round-2xl shadow-2" />
-                    </div> -->
+                    </div>
                 </div>
                 <div ref="stats" class="p-8">
                     <div class="flex flex-column align-items-center mb-7">
@@ -157,13 +143,7 @@ const scrollTo = ($element) => {
                     </div>
                 </div>
             </div>
-
-            <div class="px-5 sm:px-8 py-8 surface-ground flex flex-wrap gap-5 align-items-center justify-content-between">
-                <div class="text-4xl font-bold">Join the Prime Community</div>
-                <Button label="Join Now" class="p-button-raised"></Button>
-            </div>
-
-            <!-- <div ref="features" class="px-5 sm:px-8 py-8 surface-card">
+            <div ref="features" class="px-5 sm:px-8 py-8 surface-card">
                 <div class="flex flex-column lg:flex-row justify-content-center gap-5">
                     <div>
                         <div class="bg-orange-50 p-6 flex align-items-center justify-content-center mb-5" style="border-radius: 14px; border-top-left-radius: 5rem">
@@ -187,8 +167,12 @@ const scrollTo = ($element) => {
                         <p class="line-height-3 text-color-secondary">Nam non ligula sed urna malesuada lacinia. Aliquam sed viverra ipsum.</p>
                     </div>
                 </div>
-            </div> -->
-            <!-- <div ref="pricing" class="px-5 sm:px-8 py-8 surface-card flex flex-column lg:flex-row justify-content-center gap-5">
+            </div>
+            <div class="px-5 sm:px-8 py-8 surface-ground flex flex-wrap gap-5 align-items-center justify-content-between">
+                <div class="text-4xl font-bold">Join the Prime Community</div>
+                <Button label="Join Now" class="p-button-raised"></Button>
+            </div>
+            <div ref="pricing" class="px-5 sm:px-8 py-8 surface-card flex flex-column lg:flex-row justify-content-center gap-5">
                 <div class="shadow-2 surface-card p-5 text-center border-round-2xl">
                     <img alt="intro image" src="/demo/images/landing/asset-free.svg" class="w-full sm:w-6 lg:w-full block mx-auto mb-5" />
                     <div class="text-2xl font-bold mb-3">Free</div>
@@ -285,7 +269,7 @@ const scrollTo = ($element) => {
                         </li>
                     </ul>
                 </div>
-            </div> -->
+            </div>
             <div class="px-5 sm:px-8 py-8 bg-gray-900 flex flex-column md:flex-row md:align-items-start gap-5" style="border-top-left-radius: 14px; border-top-right-radius: 14px">
                 <div class="flex align-items-center flex-1">
                     <img alt="intro image" src="/demo/images/landing/logo-v.svg" class="w-4rem" />

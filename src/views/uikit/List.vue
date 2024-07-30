@@ -103,7 +103,7 @@ const getSeverity = (product) => {
                                 <InputIcon class="pi pi-search" />
                                 <InputText v-model="globalFilterValue" @input="onFilter" placeholder="Search by Name" />
                             </IconField>
-                            <DataViewLayoutOptions v-model="layout" />
+                            <!-- <DataViewLayoutOptions v-model="layout" /> -->
                         </div>
                     </template>
 

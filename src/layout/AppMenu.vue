@@ -9,6 +9,11 @@ const model = ref([
         to: '/home'
     },
     {
+        label: 'Listings',
+        icon: 'pi pi-list',
+        to: '/listings'
+    },
+    {
         label: 'Dashboard',
         icon: 'pi pi-home',
         items: [

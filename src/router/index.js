@@ -1,19 +1,28 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import AppLayout from '@/layout/AppLayout.vue';
+import PageFrame from '@/layout/PageFrame.vue';
 
 const routes = [
     {
         path: '/',
         component: AppLayout,
         children: [
-            {
-                path: '/home',
-                name: 'Home',
-                meta: {
-                    breadcrumb: []
-                },
-                component: () => import('@/views/pages/Home.vue')
-            },
+            // {
+            //     path: '/home',
+            //     name: 'Home',
+            //     meta: {
+            //         breadcrumb: []
+            //     },
+            //     component: () => import('@/views/pages/Home.vue')
+            // },
+            // {
+            //     path: '/listings',
+            //     name: 'listings',
+            //     meta: {
+            //         breadcrumb: ['Home', 'Listings']
+            //     },
+            //     component: () => import('@/views/pages/Listings.vue')
+            // },
             {
                 path: '/',
                 name: 'SaaS',
@@ -413,6 +422,44 @@ const routes = [
             }
         ]
     },
+    {
+        path: '/home',
+            component: PageFrame,
+            children: [
+                {
+                    path: '/home',
+                    name: 'Home',
+                    meta: {
+                        breadcrumb: ['Home']
+                    },
+                    component: () => import('@/views/pages/Home.vue')
+                },
+                {
+                    path: '/listings',
+                    name: 'listings',
+                    meta: {
+                        breadcrumb: ['Home', 'Listings']
+                    },
+                    component: () => import('@/views/pages/Listings.vue')
+                }
+            ]
+    },
+    // {
+    //     path: '/home',
+    //     name: 'Home',
+    //     // meta: {
+    //     //     breadcrumb: []
+    //     // },
+    //     component: () => import('@/views/pages/Home.vue')
+    // },
+    // {
+    //     path: '/listings',
+    //     name: 'listings',
+    //     meta: {
+    //         breadcrumb: ['Listings']
+    //     },
+    //     component: () => import('@/views/pages/Listings.vue')
+    // },
     {
         path: '/landing',
         name: 'landing',
