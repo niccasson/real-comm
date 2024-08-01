@@ -436,7 +436,7 @@ const routes = [
                 },
                 {
                     path: '/listings',
-                    name: 'listings',
+                    name: 'Listings',
                     meta: {
                         breadcrumb: ['Home', 'Listings']
                     },

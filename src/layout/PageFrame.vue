@@ -71,9 +71,68 @@ const isOutsideClicked = (event) => {
 };
 </script>
 
+<script>
+export default {
+  methods: {
+    goToHome() {
+      this.$router.push({ name: 'Home' });
+    },
+    goToListings() {
+      this.$router.push({ name: 'Listings' });
+    },
+  },
+};
+</script>
+
 <template>
     <div class="layout-container" :class="containerClass">
-        <AppTopbar ref="topbarRef"></AppTopbar>
+        <!-- <AppTopbar ref="topbarRef"></AppTopbar> -->
+        <div class="flex align-items-center justify-content-between px-5 sm:px-8 py-6">
+            <a @click="navigateToDashboard" class="cursor-pointer">
+                <span class="text-2xl font-bold text-color">REALCOMM</span>
+            </a>
+            <div class="relative">
+                <Button
+                    class="cursor-pointer block lg:hidden select-none p-link w-3rem h-3rem inline-flex align-items-center justify-content-center border-circle text-color"
+                    v-styleclass="{ selector: '@next', enterClass: 'hidden', enterActiveClass: 'scalein', leaveToClass: 'hidden', leaveActiveClass: 'fadeout', leaveToClass: 'hidden', hideOnOutsideClick: 'true' }"
+                >
+                    <i class="pi pi-bars text-4xl"></i>
+                </Button>
+                <div id="landing-menu" class="hidden lg:block absolute right-0 top-auto lg:static z-1 shadow-2 lg:shadow-none w-15rem lg:w-auto surface-overlay lg:surface-ground origin-top p-3 lg:p-0" style="border-radius: 14px">
+                    <ul class="flex flex-column lg:flex-row m-0 p-0 list-none text-2xl lg:text-base">
+                        <li>
+                            <a
+                                class="block p-3 cursor-pointer font-bold text-color-secondary hover:text-color transition-colors transition-duration-300"
+                                @click="goToHome"
+                                v-styleclass="{ selector: '#landing-menu', leaveActiveClass: 'fadeout', leaveToClass: 'hidden' }"
+                                leaveActiveClass="fadeout"
+                                leaveToClass="hidden"
+                                >HOME PAGE</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="block p-3 cursor-pointer font-bold text-color-secondary hover:text-color transition-colors transition-duration-300"
+                                @click="goToListings"
+                                v-styleclass="{ selector: '#landing-menu', leaveActiveClass: 'fadeout', leaveToClass: 'hidden' }"
+                                >BROWSE LISTINGS</a
+                            >
+                        </li>
+                        <!-- <li>
+                            <a
+                                class="block p-3 cursor-pointer font-bold text-color-secondary hover:text-color transition-colors transition-duration-300"
+                                @click="scrollTo(pricing)"
+                                v-styleclass="{ selector: '#landing-menu', leaveActiveClass: 'fadeout', leaveToClass: 'hidden' }"
+                                >PRICING</a
+                            >
+                        </li> -->
+                        <li>
+                            <a class="block p-3 cursor-pointer font-bold text-color-secondary hover:text-color transition-colors transition-duration-300" @click="navigateToRegister">SIGN IN</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <div class="layout-content">
             <div class="layout-content-inner">
                 <AppBreadcrumb></AppBreadcrumb>
@@ -91,7 +150,7 @@ const isOutsideClicked = (event) => {
                 </div>
             </div>
         </div> -->
-        <Toast />
+        <!-- <Toast /> -->
         <AppConfig></AppConfig>
     </div>
 </template>
