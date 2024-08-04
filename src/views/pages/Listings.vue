@@ -263,6 +263,48 @@ const products2 = ref([
     </div>
 
     <div class="card">
+      <div class="text-900 font-medium text-4xl mb-4">Popular Products</div>
+      <p class="mt-0 p-0 mb-5 text-700 text-2xl">Exclusive Selection</p>
+      <div class="grid -mt-3 -ml-3 -mr-3">
+        <div
+          v-for="(product, i) in paginatedProducts"
+          :key="i"
+          class="col-12 md:col-6 lg:col-4"
+        >
+          <div class="p-2">
+            <div class="shadow-2 p-4 surface-card border-round">
+              <div class="relative mb-3">
+                <span
+                  class="surface-card text-900 shadow-2 px-3 py-2 absolute border-round-3xl"
+                  :style="{ left: '1rem', top: '1rem' }"
+                >
+                  Category
+                </span>
+                <img :src="product.image" class="w-full" :alt="i" />
+              </div>
+              <div class="flex justify-content-between align-items-center mb-3">
+                <span class="text-900 font-medium text-xl">Product Name</span>
+                <span>
+                  <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
+                  <span class="font-medium">5.0</span>
+                </span>
+              </div>
+              <p class="mt-0 mb-3 text-700 line-height-3">
+                Enim nec dui nunc mattis enim ut tellus. Tincidunt arcu.
+              </p>
+              <span class="text-primary text-xl font-medium">{{ product.price }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pagination-controls">
+        <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+      </div>
+    </div>
+
+    <!-- <div class="card">
         <div class="text-900 font-medium text-4xl mb-4">Popular Products</div>
         <p class="mt-0 p-0 mb-5 text-700 text-2xl">Exclusive Selection</p>
         <div class="grid -mt-3 -ml-3 -mr-3">
@@ -286,9 +328,11 @@ const products2 = ref([
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <div class="card">
+
+
+    <!-- <div class="card">
         <div class="grid -mt-3 -ml-3 -mr-3">
             <div v-for="(product, i) in products2" :key="i" class="col-12 md:col-6 lg:col-3 mb-5 lg:mb-0">
                 <div class="mb-3 relative">
@@ -331,5 +375,103 @@ const products2 = ref([
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
+
+  
+<script>
+export default {
+    data() {
+        return {
+            currentPage: 1,
+            itemsPerPage: 6, // Adjust this value as needed
+            products: [
+                // Your product data here
+                {
+                    price: '$140.00',
+                    image: '/demo/images/ecommerce/product-list/product-list-4-1.png'
+                },
+                {
+                    price: '$82.00',
+                    image: '/demo/images/ecommerce/product-list/product-list-4-2.png'
+                },
+                {
+                    price: '$54.00',
+                    image: '/demo/images/ecommerce/product-list/product-list-4-3.png'
+                },
+                {
+                    price: '$72.00',
+                    image: '/demo/images/ecommerce/product-list/product-list-4-4.png'
+                },
+                {
+                    price: '$99.00',
+                    image: '/demo/images/ecommerce/product-list/product-list-4-5.png'
+                },
+                {
+                    price: '$89.00',
+                    image: '/demo/images/ecommerce/product-list/product-list-4-6.png'
+                },
+                {
+                    price: '$140.00',
+                    image: '/demo/images/ecommerce/product-list/product-list-4-1.png'
+                },
+                {
+                    price: '$140.00',
+                    image: '/demo/images/ecommerce/product-list/product-list-4-1.png'
+                },
+                {
+                    price: '$140.00',
+                    image: '/demo/images/ecommerce/product-list/product-list-4-1.png'
+                },
+                {
+                    price: '$72.00',
+                    image: '/demo/images/ecommerce/product-list/product-list-4-4.png'
+                },
+                {
+                    price: '$99.00',
+                    image: '/demo/images/ecommerce/product-list/product-list-4-5.png'
+                },
+                {
+                    price: '$89.00',
+                    image: '/demo/images/ecommerce/product-list/product-list-4-6.png'
+                }
+            ],
+        };
+    },
+    computed: {
+        paginatedProducts() {
+            const start = (this.currentPage - 1) * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
+            return this.products.slice(start, end);
+        },
+        totalPages() {
+            return Math.ceil(this.products.length / this.itemsPerPage);
+        },
+    },
+    methods: {
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        },
+    },
+  };
+  </script>
+  
+  <style>
+  /* Add any necessary styling for pagination controls here */
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  .pagination-controls button {
+    margin: 0 0.5rem;
+  }
+  </style>
