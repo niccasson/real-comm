@@ -438,7 +438,7 @@ export default {
             ],
         };
     },
-    computed: {
+    computed: { //Karima is cute
         paginatedProducts() {
             const start = (this.currentPage - 1) * this.itemsPerPage;
             const end = start + this.itemsPerPage;
