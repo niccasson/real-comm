@@ -80,6 +80,9 @@ export default {
     goToListings() {
       this.$router.push({ name: 'Listings' });
     },
+    goToCreateListing() {
+      this.$router.push({ name: 'Create Listing' });
+    },
   },
 };
 </script>
@@ -116,6 +119,14 @@ export default {
                                 @click="goToListings"
                                 v-styleclass="{ selector: '#landing-menu', leaveActiveClass: 'fadeout', leaveToClass: 'hidden' }"
                                 >BROWSE LISTINGS</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="block p-3 cursor-pointer font-bold text-color-secondary hover:text-color transition-colors transition-duration-300"
+                                @click="goToCreateListing"
+                                v-styleclass="{ selector: '#landing-menu', leaveActiveClass: 'fadeout', leaveToClass: 'hidden' }"
+                                >CREATE LISTING</a
                             >
                         </li>
                         <!-- <li>

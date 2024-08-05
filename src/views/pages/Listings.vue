@@ -272,7 +272,7 @@ const products2 = ref([
           class="col-12 md:col-6 lg:col-4"
         >
           <div class="p-2">
-            <div class="shadow-2 p-4 surface-card border-round">
+            <div class="shadow-2 p-4 surface-card border-round" @click="viewListing(product.price)">
               <div class="relative mb-3">
                 <span
                   class="surface-card text-900 shadow-2 px-3 py-2 absolute border-round-3xl"
@@ -438,7 +438,7 @@ export default {
             ],
         };
     },
-    computed: { //Karima is cute
+    computed: {
         paginatedProducts() {
             const start = (this.currentPage - 1) * this.itemsPerPage;
             const end = start + this.itemsPerPage;
@@ -449,6 +449,12 @@ export default {
         },
     },
     methods: {
+        viewListing(listingId) {
+            console.log('Div was clicked!');
+            console.log(listingId);
+            window.open('https://www.google.com', '_blank');
+            // Your logic here
+        },
         prevPage() {
             if (this.currentPage > 1) {
                 this.currentPage--;

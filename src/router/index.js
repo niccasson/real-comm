@@ -441,6 +441,14 @@ const routes = [
                         breadcrumb: ['Home', 'Listings']
                     },
                     component: () => import('@/views/pages/Listings.vue')
+                },
+                {
+                    path: '/create-listing',
+                    name: 'Create Listing',
+                    meta: {
+                        breadcrumb: ['Home', 'Create Listing']
+                    },
+                    component: () => import('@/views/pages/CreateListing.vue')
                 }
             ]
     },
