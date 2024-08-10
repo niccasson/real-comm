@@ -435,6 +435,14 @@ const routes = [
                     component: () => import('@/views/pages/Home.vue')
                 },
                 {
+                    path: '/how-to',
+                    name: 'How To',
+                    meta: {
+                        breadcrumb: ['How To']
+                    },
+                    component: () => import('@/views/pages/HowTo.vue')
+                },
+                {
                     path: '/listings',
                     name: 'Listings',
                     meta: {

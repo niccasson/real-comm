@@ -77,6 +77,9 @@ export default {
     goToHome() {
       this.$router.push({ name: 'Home' });
     },
+    goToHowTo() {
+      this.$router.push({ name: 'How To' });
+    },
     goToListings() {
       this.$router.push({ name: 'Listings' });
     },
@@ -111,6 +114,14 @@ export default {
                                 leaveActiveClass="fadeout"
                                 leaveToClass="hidden"
                                 >HOME PAGE</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="block p-3 cursor-pointer font-bold text-color-secondary hover:text-color transition-colors transition-duration-300"
+                                @click="goToHowTo"
+                                v-styleclass="{ selector: '#landing-menu', leaveActiveClass: 'fadeout', leaveToClass: 'hidden' }"
+                                >HOW TO</a
                             >
                         </li>
                         <li>
