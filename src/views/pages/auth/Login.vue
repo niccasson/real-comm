@@ -7,6 +7,10 @@ const router = useRouter();
 const navigateToDashboard = () => {
     router.push('/');
 };
+
+const goToCreateAccount = () => {
+    router.push('/auth/register');
+};
 </script>
 
 <template>
@@ -26,6 +30,8 @@ const navigateToDashboard = () => {
             </IconField>
 
             <Button label="Sign In" class="mb-4" @click="navigateToDashboard"></Button>
+
+            <span class="text-color-secondary text-center mb-4">Don't have an account yet? <a href="#" @click.prevent="goToCreateAccount">Create one</a>.</span>
 
             <span class="text-color-secondary text-center mb-4">or sign in with below</span>
 

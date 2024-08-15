@@ -1,12 +1,107 @@
+<!-- <script>
+export default {
+  methods: {
+    goToHome() {
+      this.$router.push({ name: 'Home' });
+    },
+    goToHowTo() {
+      this.$router.push({ name: 'How To' });
+    },
+    goToListings() {
+      this.$router.push({ name: 'Listings' });
+    },
+    goToCreateListing() {
+      this.$router.push({ name: 'Create Listing' });
+    },
+    goToSignIn() {
+      this.$router.push({ name: 'login' });
+    },
+  },
+};
+</script> -->
+
 <script setup>
 import { computed, watch, ref, onBeforeUnmount } from 'vue';
 import { usePrimeVue } from 'primevue/config';
 import AppTopbar from './AppTopbar.vue';
 import AppConfig from './AppConfig.vue';
 import AppBreadcrumb from './AppBreadcrumb.vue';
-import AppSidebar from './AppSidebar.vue';
+// import AppSidebar from './AppSidebar.vue';
 import AppFooter from './AppFooter.vue';
 import { useLayout } from '@/layout/composables/layout';
+import { useRouter } from 'vue-router'; // Import useRouter
+
+const router = useRouter(); // Initialize router
+
+const goToHome = () => {
+    router.push({ name: 'Home' });
+};
+const goToHowTo = () => {
+    router.push({ name: 'How To' });
+};
+const goToListings = () => {
+    router.push({ name: 'Listings' });
+};
+const goToCreateListing = () => {
+    router.push({ name: 'Create Listing' });
+};
+const goToSignIn = () => {
+    router.push({ name: 'login' });
+};
+const goToCreateAccount = () => {
+    router.push('/auth/register');
+};
+const goToMyListings = () => {
+    router.push('/user/my-listings');
+};
+const goToSavedListings = () => {
+    router.push('/user/saved-listings');
+};
+
+const nestedMenuitems = ref([
+,
+    {
+        label: 'How To',
+        icon: 'pi pi-fw pi-book',
+        command: () => goToHowTo()
+    },
+    {
+        label: 'Browse Listings',
+        icon: 'pi pi-fw pi-list',
+        command: () => goToListings()
+    },
+    {
+        label: 'Create Listing',
+        icon: 'pi pi-plus',
+        command: () => goToCreateListing()
+    },
+    {
+        label: 'Profile',
+        icon: 'pi pi-fw pi-user',
+        items: [
+            {
+                label: 'Sign In',
+                icon: 'pi pi-sign-in',
+                command: () => goToSignIn()
+            },
+            {
+                label: 'Create Account',
+                icon: 'pi pi-user-plus',
+                command: () => goToCreateAccount()
+            },
+            {
+                label: 'My Listings',
+                icon: 'pi pi-tags',
+                command: () => goToMyListings()
+            },
+            {
+                label: 'Saved Listings',
+                icon: 'pi pi-heart',
+                command: () => goToSavedListings()
+            }
+        ]
+    }
+]);
 
 const $primevue = usePrimeVue();
 const { layoutConfig, layoutState, isSidebarActive } = useLayout();
@@ -71,33 +166,14 @@ const isOutsideClicked = (event) => {
 };
 </script>
 
-<script>
-export default {
-  methods: {
-    goToHome() {
-      this.$router.push({ name: 'Home' });
-    },
-    goToHowTo() {
-      this.$router.push({ name: 'How To' });
-    },
-    goToListings() {
-      this.$router.push({ name: 'Listings' });
-    },
-    goToCreateListing() {
-      this.$router.push({ name: 'Create Listing' });
-    },
-  },
-};
-</script>
-
 <template>
     <div class="layout-container" :class="containerClass">
         <!-- <AppTopbar ref="topbarRef"></AppTopbar> -->
         <div class="flex align-items-center justify-content-between px-5 sm:px-8 py-6">
-            <a @click="navigateToDashboard" class="cursor-pointer">
+            <!-- <a @click="navigateToDashboard" class="cursor-pointer">
                 <span class="text-2xl font-bold text-color">REALCOMM</span>
-            </a>
-            <div class="relative">
+            </a> -->
+            <!-- <div class="relative">
                 <Button
                     class="cursor-pointer block lg:hidden select-none p-link w-3rem h-3rem inline-flex align-items-center justify-content-center border-circle text-color"
                     v-styleclass="{ selector: '@next', enterClass: 'hidden', enterActiveClass: 'scalein', leaveToClass: 'hidden', leaveActiveClass: 'fadeout', leaveToClass: 'hidden', hideOnOutsideClick: 'true' }"
@@ -140,20 +216,36 @@ export default {
                                 >CREATE LISTING</a
                             >
                         </li>
-                        <!-- <li>
-                            <a
-                                class="block p-3 cursor-pointer font-bold text-color-secondary hover:text-color transition-colors transition-duration-300"
-                                @click="scrollTo(pricing)"
-                                v-styleclass="{ selector: '#landing-menu', leaveActiveClass: 'fadeout', leaveToClass: 'hidden' }"
-                                >PRICING</a
-                            >
-                        </li> -->
                         <li>
-                            <a class="block p-3 cursor-pointer font-bold text-color-secondary hover:text-color transition-colors transition-duration-300" @click="navigateToRegister">SIGN IN</a>
+                            <a 
+                                class="block p-3 cursor-pointer font-bold text-color-secondary hover:text-color transition-colors transition-duration-300"
+                                @click="goToSignIn"
+                                >SIGN IN</a
+                            >
                         </li>
                     </ul>
                 </div>
-            </div>
+                
+                <Menubar :model="nestedMenuitems">
+                    <template #start>
+                        <a @click="goToHome" class="cursor-pointer">
+                            <span class="text-2xl font-bold text-color">REALCOMM</span>
+                        </a>
+                    </template>
+                </Menubar>
+            </div> -->
+
+            <Menubar :model="nestedMenuitems">
+                <template #start>
+                    <a @click="goToHome" class="cursor-pointer">
+                        <span class="text-2xl font-bold text-color">REALCOMM</span>
+                    </a>
+                    <!-- <IconField iconPosition="left">
+                        <InputIcon class="pi pi-search" />
+                        <InputText type="text" placeholder="Search" />
+                    </IconField> -->
+                </template>
+            </Menubar>
         </div>
         <div class="layout-content">
             <div class="layout-content-inner">
@@ -162,7 +254,6 @@ export default {
                 <AppFooter></AppFooter>
             </div>
         </div>
-        <!-- <AppSidebar></AppSidebar> -->
         <!-- <div class="layout-content-wrapper">
             <div class="layout-content">
                 <div class="layout-content-inner">
@@ -177,4 +268,16 @@ export default {
     </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.header-container {
+    display: flex;
+    justify-content: center; /* Center align the Menubar */
+    padding: 1rem; /* Add padding as needed */
+}
+
+.p-menubar {
+    display: flex;
+    justify-content: center; /* Center align content inside the Menubar */
+    width: 100%; /* Ensure it takes up the full width */
+}
+</style>
