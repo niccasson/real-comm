@@ -59,7 +59,6 @@ const goToSavedListings = () => {
 };
 
 const nestedMenuitems = ref([
-,
     {
         label: 'How To',
         icon: 'pi pi-fw pi-book',

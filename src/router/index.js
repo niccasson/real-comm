@@ -446,7 +446,7 @@ const routes = [
                     path: '/listings',
                     name: 'Listings',
                     meta: {
-                        breadcrumb: ['Home', 'Listings']
+                        breadcrumb: ['Listings']
                     },
                     component: () => import('@/views/pages/Listings.vue')
                 },
@@ -454,9 +454,19 @@ const routes = [
                     path: '/create-listing',
                     name: 'Create Listing',
                     meta: {
-                        breadcrumb: ['Home', 'Create Listing']
+                        breadcrumb: ['Create Listing']
                     },
                     component: () => import('@/views/pages/CreateListing.vue')
+                },
+                {
+                    path: '/user/my-listings',
+                    name: 'my-listings',
+                    component: () => import('@/views/pages/user/MyListings.vue')
+                },
+                {
+                    path: '/user/saved-listings',
+                    name: 'saved-listings',
+                    component: () => import('@/views/pages/user/SavedListings.vue')
                 }
             ]
     },
@@ -476,16 +486,18 @@ const routes = [
     //     },
     //     component: () => import('@/views/pages/Listings.vue')
     // },
-    {
-        path: '/landing',
-        name: 'landing',
-        component: () => import('@/views/pages/Landing.vue')
-    },
-    {
-        path: '/pages/notfound',
-        name: 'notfound',
-        component: () => import('@/views/pages/NotFound.vue')
-    },
+
+
+    // {
+    //     path: '/landing',
+    //     name: 'landing',
+    //     component: () => import('@/views/pages/Landing.vue')
+    // },
+    // {
+    //     path: '/pages/notfound',
+    //     name: 'notfound',
+    //     component: () => import('@/views/pages/NotFound.vue')
+    // },
     {
         path: '/auth/login',
         name: 'login',
@@ -526,21 +538,11 @@ const routes = [
         name: 'lockscreen',
         component: () => import('@/views/pages/auth/LockScreen.vue')
     },
-    {
-        path: '/:pathMatch(.*)*',
-        name: 'notfound',
-        component: () => import('@/views/pages/NotFound.vue')
-    },
-    {
-        path: '/user/my-listings',
-        name: 'my-listings',
-        component: () => import('@/views/pages/auth/LockScreen.vue')
-    },
-    {
-        path: '/user/saved-listings',
-        name: 'saved-listings',
-        component: () => import('@/views/pages/NotFound.vue')
-    }
+    // {
+    //     path: '/:pathMatch(.*)*',
+    //     name: 'notfound',
+    //     component: () => import('@/views/pages/NotFound.vue')
+    // },
 ];
 
 const router = createRouter({
