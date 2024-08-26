@@ -435,12 +435,57 @@ const routes = [
                     component: () => import('@/views/pages/Home.vue')
                 },
                 {
-                    path: '/how-to',
-                    name: 'How To',
+                    path: '/how-to-sell',
+                    name: 'How To Sell',
                     meta: {
-                        breadcrumb: ['How To']
+                        breadcrumb: ['How To Sell']
                     },
-                    component: () => import('@/views/pages/HowTo.vue')
+                    component: () => import('@/views/pages/HowToSell.vue'),
+                    children: [
+                        {
+                            path: '/how-to-sell/create-listing',
+                            meta: {
+                                breadcrumb: ['How To Sell', 'Create Listing']
+                            },
+                            component: () => import('@/views/HowToSellCreateListing.vue')
+                        },
+                        {
+                            path: '/how-to-sell/arrange-showings',
+                            meta: {
+                                breadcrumb: ['How To Sell', 'Arrange Showings']
+                            },
+                            component: () => import('@/views/HowToSellArrangeShowings.vue')
+                        },
+                        {
+                            path: '/how-to-sell/select-offer',
+                            meta: {
+                                breadcrumb: ['How To Sell', 'Select Offer']
+                            },
+                            component: () => import('@/views/HowToSellSelectOffer.vue')
+                        },
+                        {
+                            path: '/how-to-sell/complete-paperwork',
+                            meta: {
+                                breadcrumb: ['How To Sell', 'Complete Paperwork']
+                            },
+                            component: () => import('@/views/HowToSellCompletePaperwork.vue')
+                        },
+                        {
+                            path: '/how-to-sell/finish',
+                            meta: {
+                                breadcrumb: ['How To Sell', 'Finish']
+                            },
+                            component: () => import('@/views/HowToSellFinish.vue')
+                        }
+                    ]
+                },
+                {
+                    path: '/how-to-buy',
+                    name: 'How To Buy',
+                    meta: {
+                        breadcrumb: ['How To Buy']
+                    },
+                    component: () => import('@/views/pages/HowToBuy.vue')
                 },
                 {
                     path: '/listings',

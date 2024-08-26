@@ -35,7 +35,137 @@ const scrollTo = ($element) => {
 <template>
     <div class="surface-ground min-h-screen w-screen">
         <div class="landing-wrapper">
+
+
+
+            
+
             <div :style="backgroundStyle" class="bg-no-repeat bg-cover bg-bottom">
+                <div class="col-12">
+                    <div class="card">
+                        <h5>Browse Listings</h5>
+                        <div class="grid p-fluid">
+                            <!-- <div class="col-12 md:col-6">
+                                <InputGroup>
+                                    <InputGroupAddon>
+                                        <i class="pi pi-user"></i>
+                                    </InputGroupAddon>
+                                    <InputText placeholder="Username" />
+                                </InputGroup>
+                            </div> -->
+
+                            <!-- <div class="col-12 md:col-6">
+                                <InputGroup>
+                                    <InputGroupAddon>
+                                        <i class="pi pi-clock"></i>
+                                    </InputGroupAddon>
+                                    <InputGroupAddon>
+                                        <i class="pi pi-star-fill"></i>
+                                    </InputGroupAddon>
+                                    <InputNumber placeholder="Price" />
+                                    <InputGroupAddon>$</InputGroupAddon>
+                                    <InputGroupAddon>.00</InputGroupAddon>
+                                </InputGroup>
+                            </div> -->
+
+                            <div class="col-12 md:col-12">
+                                <InputGroup>
+                                    <Button label="Search" />
+                                    <InputText placeholder="Enter City, Area or Region" />
+                                </InputGroup>
+                            </div>
+
+                            <!-- <div class="col-12 md:col-6">
+                                <InputGroup>
+                                    <InputGroupAddon>
+                                        <Checkbox v-model="inputGroupValue" :binary="true" />
+                                    </InputGroupAddon>
+                                    <InputText placeholder="Confirm" />
+                                </InputGroup>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div ref="stats" class="p-8">
+                    <div class="flex flex-column align-items-center mb-7">
+                        <span class="font-bold text-color-secondary text-2xl mb-3">Sell and Buy Homes Commision Free</span>
+                        <h2 class="font-bold text-6xl my-0">How It Works</h2>
+                    </div>
+                    <div class="flex flex-column xl:flex-row justify-content-center gap-5">
+                        <div class="surface-card text-center py-7 px-5 shadow-2" style="border-radius: 14px">
+                            <div class="text-xl text-color-secondary mb-3">Sellers</div>
+                            <h3 class="mt-0 mb-3 font-bold text-4xl">List your home</h3>
+                            <p class="line-height-3 mb-5 text-color-secondary">Join over <strong>1000</strong> people selling their house commision free.</p>
+                            <Button icon="pi pi-arrow-right" label="Get Started" class="p-button-text" iconPos="right"></Button>
+                            <div class="mt-8 xl:pt-8">
+                                <img alt="intro image" src="/demo/images/landing/feature-components.svg" class="w-9 md:w-4 xl:w-9" />
+                            </div>
+                        </div>
+                        <div class="flex flex-column md:flex-row xl:flex-column gap-5">
+                            <div class="flex-1 surface-card flex flex-column xl:flex-row xl:align-items-center justify-content-between py-7 px-5 shadow-2 gap-5" style="border-radius: 14px">
+                                <div class="flex-1 flex-order-1 xl:flex-order-0 text-center xl:text-left">
+                                    <img alt="intro image" src="/demo/images/landing/feature-blocks.svg" class="w-9" />
+                                </div>
+                                <div class="text-center xl:text-right flex-1">
+                                    <div class="text-xl text-color-secondary mb-3">PrimeBlocks</div>
+                                    <h3 class="mt-0 mb-3 font-bold text-4xl">Save your time</h3>
+                                    <p class="line-height-3 mb-5 text-color-secondary">PrimeBlocks have <strong>370+</strong> blocks: hero sections, pricing, footers and more....</p>
+                                    <Button icon="pi pi-arrow-right" label="Browse Blocks" class="p-button-text" iconPos="right"></Button>
+                                </div>
+                            </div>
+                            <div class="flex-1 surface-card flex flex-column xl:flex-row xl:align-items-center justify-content-between py-7 px-5 shadow-2 gap-5" style="border-radius: 14px">
+                                <div class="text-center xl:text-left flex-1">
+                                    <div class="text-xl text-color-secondary mb-3">PrimeIcons</div>
+                                    <h3 class="mt-0 mb-3 font-bold text-4xl">Enjoy 300+ Icons</h3>
+                                    <p class="line-height-3 mb-5 text-color-secondary">What you need in your app, you find any icon in PrimeIcons.</p>
+                                    <Button icon="pi pi-arrow-right" label="Explore Icons" class="p-button-text" iconPos="right"></Button>
+                                </div>
+                                <div class="flex-1 text-center xl:text-right">
+                                    <img alt="intro image" src="/demo/images/landing/feature-icons.svg" class="w-9" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="surface-card text-center py-7 px-5 shadow-2" style="border-radius: 14px">
+                            <div class="text-xl text-color-secondary mb-3">Buyers</div>
+                            <h3 class="mt-0 mb-3 font-bold text-4xl">Browse Listings</h3>
+                            <p class="line-height-3 mb-5 text-color-secondary">Get more bang for your buck.</p>
+                            <Button icon="pi pi-arrow-right" label="View Designer" class="p-button-text" iconPos="right"></Button>
+                            <div class="mt-8 xl:pt-8">
+                                <img alt="intro image" src="/demo/images/landing/feature-designer.svg" class="w-9 md:w-4 xl:w-9" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div ref="features" class="px-5 sm:px-8 py-8 surface-card">
+                    <div class="flex flex-column lg:flex-row justify-content-center gap-5">
+                        <div>
+                            <div class="bg-orange-50 p-6 flex align-items-center justify-content-center mb-5" style="border-radius: 14px; border-top-left-radius: 5rem">
+                                <img alt="intro image" src="/demo/images/landing/icon-modern-responsive.svg" class="h-6rem sm:h-12rem" />
+                            </div>
+                            <h3 class="mt-0 mb-5 font-bold text-4xl">Save Money</h3>
+                            <p class="line-height-3 text-color-secondary">Learn how easy it is to buy or sell a home without a realator and save on fees.</p>
+                        </div>
+                        <div>
+                            <div class="bg-green-50 p-6 flex align-items-center justify-content-center mb-5" style="border-radius: 14px">
+                                <img alt="intro image" src="/demo/images/landing/icon-modern-design.svg" class="h-6rem sm:h-12rem" />
+                            </div>
+                            <h3 class="mt-0 mb-5 font-bold text-4xl">Sell A Home</h3>
+                            <p class="line-height-3 text-color-secondary">List your house, arrange showings, select an offer and then follow our guide to complete the process.</p>
+                        </div>
+                        <div>
+                            <div class="bg-red-50 p-6 flex align-items-center justify-content-center mb-5" style="border-radius: 14px; border-bottom-right-radius: 5rem">
+                                <img alt="intro image" src="/demo/images/landing/icon-clean-code.svg" class="h-6rem sm:h-12rem" />
+                            </div>
+                            <h3 class="mt-0 mb-5 font-bold text-4xl">Buy A Home</h3>
+                            <p class="line-height-3 text-color-secondary">Browse listings, arrange viewings, make an offer and then follow our guide to complete the process.</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- <div class="flex align-items-center justify-content-between px-5 sm:px-8 py-6">
                     <a @click="navigateToDashboard" class="cursor-pointer">
                         <span class="text-2xl font-bold text-color">VERONA</span>
@@ -259,127 +389,7 @@ const scrollTo = ($element) => {
                         </div>
                     </div> -->
 
-                    <div class="col-12">
-                        <div class="card">
-                            <h5>Input Groups</h5>
-                            <div class="grid p-fluid">
-                                <!-- <div class="col-12 md:col-6">
-                                    <InputGroup>
-                                        <InputGroupAddon>
-                                            <i class="pi pi-user"></i>
-                                        </InputGroupAddon>
-                                        <InputText placeholder="Username" />
-                                    </InputGroup>
-                                </div> -->
-
-                                <!-- <div class="col-12 md:col-6">
-                                    <InputGroup>
-                                        <InputGroupAddon>
-                                            <i class="pi pi-clock"></i>
-                                        </InputGroupAddon>
-                                        <InputGroupAddon>
-                                            <i class="pi pi-star-fill"></i>
-                                        </InputGroupAddon>
-                                        <InputNumber placeholder="Price" />
-                                        <InputGroupAddon>$</InputGroupAddon>
-                                        <InputGroupAddon>.00</InputGroupAddon>
-                                    </InputGroup>
-                                </div> -->
-
-                                <div class="col-12 md:col-12">
-                                    <InputGroup>
-                                        <Button label="Search" />
-                                        <InputText placeholder="Keyword" />
-                                    </InputGroup>
-                                </div>
-
-                                <!-- <div class="col-12 md:col-6">
-                                    <InputGroup>
-                                        <InputGroupAddon>
-                                            <Checkbox v-model="inputGroupValue" :binary="true" />
-                                        </InputGroupAddon>
-                                        <InputText placeholder="Confirm" />
-                                    </InputGroup>
-                                </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div ref="stats" class="p-8">
-                    <div class="flex flex-column align-items-center mb-7">
-                        <span class="font-bold text-color-secondary text-2xl mb-3">Ecosystem</span>
-                        <h2 class="font-bold text-6xl my-0">All You Need Is Here</h2>
-                    </div>
-                    <div class="flex flex-column xl:flex-row justify-content-center gap-5">
-                        <div class="surface-card text-center py-7 px-5 shadow-2" style="border-radius: 14px">
-                            <div class="text-xl text-color-secondary mb-3">Easy to use</div>
-                            <h3 class="mt-0 mb-3 font-bold text-4xl">Play like a toy</h3>
-                            <p class="line-height-3 mb-5 text-color-secondary">More than <strong>80</strong> UI components.</p>
-                            <Button icon="pi pi-arrow-right" label="Get Started" class="p-button-text" iconPos="right"></Button>
-                            <div class="mt-8 xl:pt-8">
-                                <img alt="intro image" src="/demo/images/landing/feature-components.svg" class="w-9 md:w-4 xl:w-9" />
-                            </div>
-                        </div>
-                        <div class="flex flex-column md:flex-row xl:flex-column gap-5">
-                            <div class="flex-1 surface-card flex flex-column xl:flex-row xl:align-items-center justify-content-between py-7 px-5 shadow-2 gap-5" style="border-radius: 14px">
-                                <div class="flex-1 flex-order-1 xl:flex-order-0 text-center xl:text-left">
-                                    <img alt="intro image" src="/demo/images/landing/feature-blocks.svg" class="w-9" />
-                                </div>
-                                <div class="text-center xl:text-right flex-1">
-                                    <div class="text-xl text-color-secondary mb-3">PrimeBlocks</div>
-                                    <h3 class="mt-0 mb-3 font-bold text-4xl">Save your time</h3>
-                                    <p class="line-height-3 mb-5 text-color-secondary">PrimeBlocks have <strong>370+</strong> blocks: hero sections, pricing, footers and more....</p>
-                                    <Button icon="pi pi-arrow-right" label="Browse Blocks" class="p-button-text" iconPos="right"></Button>
-                                </div>
-                            </div>
-                            <div class="flex-1 surface-card flex flex-column xl:flex-row xl:align-items-center justify-content-between py-7 px-5 shadow-2 gap-5" style="border-radius: 14px">
-                                <div class="text-center xl:text-left flex-1">
-                                    <div class="text-xl text-color-secondary mb-3">PrimeIcons</div>
-                                    <h3 class="mt-0 mb-3 font-bold text-4xl">Enjoy 300+ Icons</h3>
-                                    <p class="line-height-3 mb-5 text-color-secondary">What you need in your app, you find any icon in PrimeIcons.</p>
-                                    <Button icon="pi pi-arrow-right" label="Explore Icons" class="p-button-text" iconPos="right"></Button>
-                                </div>
-                                <div class="flex-1 text-center xl:text-right">
-                                    <img alt="intro image" src="/demo/images/landing/feature-icons.svg" class="w-9" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="surface-card text-center py-7 px-5 shadow-2" style="border-radius: 14px">
-                            <div class="text-xl text-color-secondary mb-3">Theme Designer</div>
-                            <h3 class="mt-0 mb-3 font-bold text-4xl">Design Your Own</h3>
-                            <p class="line-height-3 mb-5 text-color-secondary">Limitless customization.</p>
-                            <Button icon="pi pi-arrow-right" label="View Designer" class="p-button-text" iconPos="right"></Button>
-                            <div class="mt-8 xl:pt-8">
-                                <img alt="intro image" src="/demo/images/landing/feature-designer.svg" class="w-9 md:w-4 xl:w-9" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div ref="features" class="px-5 sm:px-8 py-8 surface-card">
-                <div class="flex flex-column lg:flex-row justify-content-center gap-5">
-                    <div>
-                        <div class="bg-orange-50 p-6 flex align-items-center justify-content-center mb-5" style="border-radius: 14px; border-top-left-radius: 5rem">
-                            <img alt="intro image" src="/demo/images/landing/icon-modern-responsive.svg" class="h-6rem sm:h-12rem" />
-                        </div>
-                        <h3 class="mt-0 mb-5 font-bold text-4xl">Responsive Design</h3>
-                        <p class="line-height-3 text-color-secondary">Nam non ligula sed urna malesuada lacinia. Aliquam sed viverra ipsum.</p>
-                    </div>
-                    <div>
-                        <div class="bg-green-50 p-6 flex align-items-center justify-content-center mb-5" style="border-radius: 14px">
-                            <img alt="intro image" src="/demo/images/landing/icon-modern-design.svg" class="h-6rem sm:h-12rem" />
-                        </div>
-                        <h3 class="mt-0 mb-5 font-bold text-4xl">Modern Design</h3>
-                        <p class="line-height-3 text-color-secondary">Nam non ligula sed urna malesuada lacinia. Aliquam sed viverra ipsum.</p>
-                    </div>
-                    <div>
-                        <div class="bg-red-50 p-6 flex align-items-center justify-content-center mb-5" style="border-radius: 14px; border-bottom-right-radius: 5rem">
-                            <img alt="intro image" src="/demo/images/landing/icon-clean-code.svg" class="h-6rem sm:h-12rem" />
-                        </div>
-                        <h3 class="mt-0 mb-5 font-bold text-4xl">Clean Code</h3>
-                        <p class="line-height-3 text-color-secondary">Nam non ligula sed urna malesuada lacinia. Aliquam sed viverra ipsum.</p>
-                    </div>
+                    
                 </div>
             </div>
             <div class="px-5 sm:px-8 py-8 surface-ground flex flex-wrap gap-5 align-items-center justify-content-between">

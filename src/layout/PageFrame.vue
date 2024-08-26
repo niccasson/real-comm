@@ -36,8 +36,11 @@ const router = useRouter(); // Initialize router
 const goToHome = () => {
     router.push({ name: 'Home' });
 };
-const goToHowTo = () => {
-    router.push({ name: 'How To' });
+const goToHowToSell = () => {
+    router.push({ name: 'How To Sell' });
+};
+const goToHowToBuy = () => {
+    router.push({ name: 'How To Buy' });
 };
 const goToListings = () => {
     router.push({ name: 'Listings' });
@@ -62,7 +65,18 @@ const nestedMenuitems = ref([
     {
         label: 'How To',
         icon: 'pi pi-fw pi-book',
-        command: () => goToHowTo()
+        items: [
+            {
+                label: 'Sell',
+                icon: 'pi pi-dollar',
+                command: () => goToHowToSell()
+            },
+            {
+                label: 'Buy',
+                icon: 'pi pi-key',
+                command: () => goToHowToBuy()
+            },
+        ]
     },
     {
         label: 'Browse Listings',
@@ -278,5 +292,9 @@ const isOutsideClicked = (event) => {
     display: flex;
     justify-content: center; /* Center align content inside the Menubar */
     width: 100%; /* Ensure it takes up the full width */
+}
+
+.layout-breadcrumb {
+    padding-left: 28px;
 }
 </style>
