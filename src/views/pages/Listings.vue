@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { ProductService } from '@/service/ProductService';
+import Listings from '@/features/listings/api/listings';
 
 const picklistValue = ref([
     [
@@ -41,6 +42,7 @@ const productService = new ProductService();
 
 onMounted(() => {
     productService.getProductsSmall().then((data) => (dataviewValue.value = data));
+    console.log(Listings.getData());
 });
 
 const onSortChange = (event) => {

@@ -88,6 +88,8 @@ import SplitButton from 'primevue/splitbutton';
 import Splitter from 'primevue/splitter';
 import SplitterPanel from 'primevue/splitterpanel';
 import Steps from 'primevue/steps';
+import Stepper from 'primevue/stepper';
+import StepperPanel from 'primevue/stepperpanel';
 import StyleClass from 'primevue/styleclass';
 import TabMenu from 'primevue/tabmenu';
 import TieredMenu from 'primevue/tieredmenu';
@@ -113,6 +115,19 @@ import VirtualScroller from 'primevue/virtualscroller';
 import '@/assets/styles.scss';
 
 const app = createApp(App);
+
+// Surpress all warnings
+app.config.warnHandler = () => {};
+// app.use(PrimeVue, {
+//   theme: {
+//       preset: Noir,
+//       options: {
+//           prefix: 'p',
+//           darkModeSelector: '.p-dark',
+//           cssLayer: false,
+//       }
+//   }
+// });
 
 app.use(router);
 app.use(PrimeVue, { ripple: true });
@@ -208,6 +223,8 @@ app.component('SplitButton', SplitButton);
 app.component('Splitter', Splitter);
 app.component('SplitterPanel', SplitterPanel);
 app.component('Steps', Steps);
+app.component('Stepper', Stepper);
+app.component('StepperPanel', StepperPanel);
 app.component('TabMenu', TabMenu);
 app.component('TabView', TabView);
 app.component('TabPanel', TabPanel);

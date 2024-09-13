@@ -1,5 +1,11 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import HowToSellCreateListing from '@/views/HowToSellCreateListing.vue';
+import HowToSellArrangeShowings from '@/views/HowToSellArrangeShowings.vue';
+import HowToSellSelectOffer from '@/views/HowToSellSelectOffer.vue';
+import HowToSellCompletePaperwork from '@/views/HowToSellCompletePaperwork.vue';
+import HowToSellFinish from '@/views/HowToSellFinish.vue';
 
 const customEvents = ref([
     {
@@ -111,28 +117,37 @@ const nestedMenuitems = ref([
 ]);
 const breadcrumbHome = ref({ icon: 'pi pi-home', to: '/' });
 const breadcrumbItems = ref([{ label: 'Computer' }, { label: 'Notebook' }, { label: 'Accessories' }, { label: 'Backpacks' }, { label: 'Item' }]);
+
+
 const nestedRouteItems = ref([
     {
         label: 'Create Listing',
-        to: '/how-to-sell/create-listing'
+        to: '/how-to-sell/create-listing',
+        component: HowToSellCreateListing
     },
     {
         label: 'Arrange Showings',
-        to: '/how-to-sell/arrange-showings'
+        to: '/how-to-sell/arrange-showings',
+        component: HowToSellArrangeShowings
     },
     {
         label: 'Select an Offer',
-        to: '/how-to-sell/select-offer'
+        to: '/how-to-sell/select-offer',
+        component: HowToSellSelectOffer
     },
     {
         label: 'Complete Paperwork',
-        to: '/how-to-sell/complete-paperwork'
+        to: '/how-to-sell/complete-paperwork',
+        component: HowToSellCompletePaperwork
     },
     {
-        label: 'Finsih',
-        to: '/how-to-sell/finish'
+        label: 'Finish',
+        to: '/how-to-sell/finish',
+        component: HowToSellFinish
     }
 ]);
+
+
 const tieredMenuItems = ref([
     {
         label: 'Customers',
@@ -475,10 +490,25 @@ const onContextRightClick = (event) => {
         <div class="card card-w-title">
             <h5>Steps To Sell Your Home Commision Free</h5>
             <p>Go from creating a listing to handing over the keys!</p>
-            <Steps :model="nestedRouteItems" :readonly="false" />
-            <router-view />
+            <Stepper>
+                <StepperPanel v-for="(item, index) in nestedRouteItems" :key="index" :header="item.label">
+                    <template #content>
+                        <component :is="item.component" />
+                    </template>
+                </StepperPanel>
+            </Stepper>
         </div>
     </div>
+
+    <!-- <template>
+        <div class="card flex justify-content-center">
+            <Steps :model="nestedRouteItems" :readonly="false" :activeIndex="activeIndex" @change="onStepChange" />
+
+            <div v-for="(step, index) in nestedRouteItems" :key="index" v-show="activeIndex === index">
+                <router-view v-if="activeIndex === index" />
+            </div>
+        </div>
+    </template> -->
 
     <div class="card">
         <h5>Custom Timeline</h5>
