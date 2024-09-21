@@ -493,7 +493,33 @@ const routes = [
                     meta: {
                         breadcrumb: ['Listings']
                     },
-                    component: () => import('@/views/pages/Listings.vue')
+                    component: () => import('@/views/pages/Listings.vue'),
+                    // children: [
+                    //     {
+                    //         path: '/listings/listing-overview',
+                    //         meta: {
+                    //             breadcrumb: ['Listings', 'Listing Overview']
+                    //         },
+                    //         component: () => import('@/views/pages/ListingOverview.vue')
+                    //     }
+                    // ]
+                },
+                {
+                    path: '/listings/listing-overview',
+                    name: 'Listings Overview',
+                    meta: {
+                        breadcrumb: ['Listings Overview']
+                    },
+                    component: () => import('@/views/pages/ListingOverview.vue'),
+                    // children: [
+                    //     {
+                    //         path: '/listings/listing-overview',
+                    //         meta: {
+                    //             breadcrumb: ['Listings', 'Listing Overview']
+                    //         },
+                    //         component: () => import('@/views/pages/ListingOverview.vue')
+                    //     }
+                    // ]
                 },
                 {
                     path: '/create-listing',

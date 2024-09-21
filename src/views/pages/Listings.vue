@@ -40,9 +40,12 @@ const sortOptions = ref([
 
 const productService = new ProductService();
 
-onMounted(() => {
+onMounted(async() => {
     productService.getProductsSmall().then((data) => (dataviewValue.value = data));
-    console.log(Listings.getData());
+    productService.getProductsSmall().then((data) => (console.log(data)));
+    let listingData = await Listings.getData();
+    filteredValue.value = listingData;
+    console.log(listingData);
 });
 
 const onSortChange = (event) => {
@@ -93,7 +96,10 @@ const getSeverity = (product) => {
 const viewListing = (listingId) => {
     console.log('Button was clicked!');
     console.log(listingId);
-    window.open('https://www.google.com', '_blank');
+    
+    // Create the URL with query parameters
+    const newWindowUrl = `${window.location.origin}/listings/listing-overview?listingId=${listingId}`;
+    window.open(newWindowUrl, '_blank');
 };
 </script>
 
@@ -116,12 +122,13 @@ const viewListing = (listingId) => {
                         </div>
                     </template>
 
-                    <template #list="slotProps">
+                    <!-- <template #list="slotProps">
                         <div class="grid grid-nogutter">
                             <div v-for="(item, index) in slotProps.items" :key="index" class="col-12">
                                 <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3" :class="{ 'border-top-1 surface-border': index !== 0 }">
                                     <div class="md:w-10rem relative">
-                                        <img class="block xl:block mx-auto border-round w-full" :src="`https://primefaces.org/cdn/primevue/images/product/${item.image}`" :alt="item.name" />
+                                        <img class="block xl:block mx-auto border-round w-full" :src="`https://real-comm-aws-bucket.s3.us-east-2.amazonaws.com/90s.jpg`" :alt="item.name" />
+                                        <img v-if="`https://real-comm-aws-bucket.s3.us-east-2.amazonaws.com/90s.jpg`" :src="`https://primefaces.org/cdn/primevue/images/product/${item.image}`" alt="Loaded Image" />
                                         <Tag :value="item.inventoryStatus" :severity="getSeverity(item)" class="absolute" style="left: 4px; top: 4px"></Tag>
                                     </div>
                                     <div class="flex flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4">
@@ -148,7 +155,7 @@ const viewListing = (listingId) => {
                                 </div>
                             </div>
                         </div>
-                    </template>
+                    </template> -->
 
                     <template #grid="slotProps">
                         <div class="grid grid-nogutter">
@@ -156,27 +163,27 @@ const viewListing = (listingId) => {
                                 <div class="p-4 border-1 surface-border surface-card border-round flex flex-column">
                                     <div class="flex justify-content-center p-3">
                                         <div class="relative mx-auto">
-                                            <img class="border-round w-full" :src="`https://primefaces.org/cdn/primevue/images/product/${item.image}`" :alt="item.name" style="max-width: 300px"/>
-                                            <Tag :value="item.inventoryStatus" :severity="getSeverity(item)" class="absolute" style="left: 4px; top: 4px"></Tag>
+                                            <img class="border-round w-full" :src="item.media" :alt="item.address" style="max-width: 300px"/>
+                                            <!-- <Tag :value="item.inventoryStatus" :severity="getSeverity(item)" class="absolute" style="left: 4px; top: 4px"></Tag> -->
                                         </div>
                                     </div>
                                     <div class="pt-4">
                                         <div class="flex flex-row justify-content-between align-items-start gap-2">
                                             <div>
-                                                <span class="font-medium text-secondary text-sm">{{ item.category }}</span>
-                                                <div class="text-lg font-medium text-900 mt-1">{{ item.name }}</div>
+                                                <span class="font-medium text-secondary text-sm">{{ item.city_town }}, {{ item.province }}</span>
+                                                <div class="text-lg font-medium text-900 mt-1">{{ item.address }}</div>
                                             </div>
                                             <div class="surface-100 p-1" style="border-radius: 30px">
                                                 <div class="surface-0 flex align-items-center gap-2 justify-content-center py-1 px-2" style="border-radius: 30px; box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)">
-                                                    <span class="text-900 font-medium text-sm">{{ item.rating }}</span>
+                                                    <span class="text-900 font-medium text-sm">{{ item.square_footage }}</span>
                                                     <i class="pi pi-star-fill text-yellow-500"></i>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="flex flex-column gap-4 mt-4">
-                                            <span class="text-2xl font-semibold text-900">${{ item.price }}</span>
+                                            <span class="text-2xl font-semibold text-900">${{ item.asking_price }}</span>
                                             <div class="flex gap-2">
-                                                <Button icon="pi pi-shopping-cart" label="Buy Now" :disabled="item.inventoryStatus === 'OUTOFSTOCK'" class="flex-auto white-space-nowrap" @click="viewListing(item.price)" />
+                                                <Button icon="pi pi-shopping-cart" label="Buy Now" class="flex-auto white-space-nowrap" @click="viewListing(item.listing_id)" />
                                                 <Button icon="pi pi-heart" outlined></Button>
                                             </div>
                                         </div>
@@ -187,6 +194,9 @@ const viewListing = (listingId) => {
                     </template>
                 </DataView>
 
+                <!-- <div>
+                    <img v-if="`https://real-comm-aws-bucket.s3.us-east-2.amazonaws.com/90s.jpg`" :src="`https://real-comm-aws-bucket.s3.us-east-2.amazonaws.com/90s.jpg`" alt="Loaded Image" />
+                </div> -->
 
             </div>
         </div>
