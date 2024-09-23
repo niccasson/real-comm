@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // import AppLayout from '@/layout/AppLayout.vue';
 import PageFrame from '@/layout/PageFrame.vue';
+import authStore from '@/features/auth/stores/auth-store';
 
 const routes = [
     // {
@@ -424,122 +425,124 @@ const routes = [
     // },
     {
         path: '/',
-            component: PageFrame,
-            children: [
-                {
-                    path: '/',
-                    name: 'Home',
-                    meta: {
-                        breadcrumb: ['Home']
-                    },
-                    component: () => import('@/views/pages/Home.vue')
+        component: PageFrame,
+        children: [
+            {
+                path: '/',
+                name: 'Home',
+                meta: {
+                    breadcrumb: ['Home'],
+                    // requiresAuth: true
                 },
-                {
-                    path: '/how-to-sell',
-                    name: 'How To Sell',
-                    meta: {
-                        breadcrumb: ['How To Sell']
-                    },
-                    component: () => import('@/views/pages/HowToSell.vue'),
-                    children: [
-                        {
-                            path: '/how-to-sell/create-listing',
-                            meta: {
-                                breadcrumb: ['How To Sell', 'Create Listing']
-                            },
-                            component: () => import('@/views/HowToSellCreateListing.vue')
+                component: () => import('@/views/pages/Home.vue')
+            },
+            {
+                path: '/how-to-sell',
+                name: 'How To Sell',
+                meta: {
+                    breadcrumb: ['How To Sell']
+                },
+                component: () => import('@/views/pages/HowToSell.vue'),
+                children: [
+                    {
+                        path: '/how-to-sell/create-listing',
+                        meta: {
+                            breadcrumb: ['How To Sell', 'Create Listing']
                         },
-                        {
-                            path: '/how-to-sell/arrange-showings',
-                            meta: {
-                                breadcrumb: ['How To Sell', 'Arrange Showings']
-                            },
-                            component: () => import('@/views/HowToSellArrangeShowings.vue')
+                        component: () => import('@/views/HowToSellCreateListing.vue')
+                    },
+                    {
+                        path: '/how-to-sell/arrange-showings',
+                        meta: {
+                            breadcrumb: ['How To Sell', 'Arrange Showings']
                         },
-                        {
-                            path: '/how-to-sell/select-offer',
-                            meta: {
-                                breadcrumb: ['How To Sell', 'Select Offer']
-                            },
-                            component: () => import('@/views/HowToSellSelectOffer.vue')
+                        component: () => import('@/views/HowToSellArrangeShowings.vue')
+                    },
+                    {
+                        path: '/how-to-sell/select-offer',
+                        meta: {
+                            breadcrumb: ['How To Sell', 'Select Offer']
                         },
-                        {
-                            path: '/how-to-sell/complete-paperwork',
-                            meta: {
-                                breadcrumb: ['How To Sell', 'Complete Paperwork']
-                            },
-                            component: () => import('@/views/HowToSellCompletePaperwork.vue')
+                        component: () => import('@/views/HowToSellSelectOffer.vue')
+                    },
+                    {
+                        path: '/how-to-sell/complete-paperwork',
+                        meta: {
+                            breadcrumb: ['How To Sell', 'Complete Paperwork']
                         },
-                        {
-                            path: '/how-to-sell/finish',
-                            meta: {
-                                breadcrumb: ['How To Sell', 'Finish']
-                            },
-                            component: () => import('@/views/HowToSellFinish.vue')
-                        }
-                    ]
-                },
-                {
-                    path: '/how-to-buy',
-                    name: 'How To Buy',
-                    meta: {
-                        breadcrumb: ['How To Buy']
+                        component: () => import('@/views/HowToSellCompletePaperwork.vue')
                     },
-                    component: () => import('@/views/pages/HowToBuy.vue')
+                    {
+                        path: '/how-to-sell/finish',
+                        meta: {
+                            breadcrumb: ['How To Sell', 'Finish']
+                        },
+                        component: () => import('@/views/HowToSellFinish.vue')
+                    }
+                ]
+            },
+            {
+                path: '/how-to-buy',
+                name: 'How To Buy',
+                meta: {
+                    breadcrumb: ['How To Buy']
                 },
-                {
-                    path: '/listings',
-                    name: 'Listings',
-                    meta: {
-                        breadcrumb: ['Listings']
-                    },
-                    component: () => import('@/views/pages/Listings.vue'),
-                    // children: [
-                    //     {
-                    //         path: '/listings/listing-overview',
-                    //         meta: {
-                    //             breadcrumb: ['Listings', 'Listing Overview']
-                    //         },
-                    //         component: () => import('@/views/pages/ListingOverview.vue')
-                    //     }
-                    // ]
+                component: () => import('@/views/pages/HowToBuy.vue')
+            },
+            {
+                path: '/listings',
+                name: 'Listings',
+                meta: {
+                    breadcrumb: ['Listings'],
+                    requiresAuth: true
                 },
-                {
-                    path: '/listings/listing-overview',
-                    name: 'Listings Overview',
-                    meta: {
-                        breadcrumb: ['Listings Overview']
-                    },
-                    component: () => import('@/views/pages/ListingOverview.vue'),
-                    // children: [
-                    //     {
-                    //         path: '/listings/listing-overview',
-                    //         meta: {
-                    //             breadcrumb: ['Listings', 'Listing Overview']
-                    //         },
-                    //         component: () => import('@/views/pages/ListingOverview.vue')
-                    //     }
-                    // ]
+                component: () => import('@/views/pages/Listings.vue'),
+                // children: [
+                //     {
+                //         path: '/listings/listing-overview',
+                //         meta: {
+                //             breadcrumb: ['Listings', 'Listing Overview']
+                //         },
+                //         component: () => import('@/views/pages/ListingOverview.vue')
+                //     }
+                // ]
+            },
+            {
+                path: '/listings/listing-overview',
+                name: 'Listings Overview',
+                meta: {
+                    breadcrumb: ['Listings Overview']
                 },
-                {
-                    path: '/create-listing',
-                    name: 'Create Listing',
-                    meta: {
-                        breadcrumb: ['Create Listing']
-                    },
-                    component: () => import('@/views/pages/CreateListing.vue')
+                component: () => import('@/views/pages/ListingOverview.vue'),
+                // children: [
+                //     {
+                //         path: '/listings/listing-overview',
+                //         meta: {
+                //             breadcrumb: ['Listings', 'Listing Overview']
+                //         },
+                //         component: () => import('@/views/pages/ListingOverview.vue')
+                //     }
+                // ]
+            },
+            {
+                path: '/create-listing',
+                name: 'Create Listing',
+                meta: {
+                    breadcrumb: ['Create Listing']
                 },
-                {
-                    path: '/user/my-listings',
-                    name: 'my-listings',
-                    component: () => import('@/views/pages/user/MyListings.vue')
-                },
-                {
-                    path: '/user/saved-listings',
-                    name: 'saved-listings',
-                    component: () => import('@/views/pages/user/SavedListings.vue')
-                }
-            ]
+                component: () => import('@/views/pages/CreateListing.vue')
+            },
+            {
+                path: '/user/my-listings',
+                name: 'my-listings',
+                component: () => import('@/views/pages/user/MyListings.vue')
+            },
+            {
+                path: '/user/saved-listings',
+                name: 'saved-listings',
+                component: () => import('@/views/pages/user/SavedListings.vue')
+            }
+        ]
     },
     // {
     //     path: '/home',
@@ -570,45 +573,51 @@ const routes = [
     //     component: () => import('@/views/pages/NotFound.vue')
     // },
     {
-        path: '/auth/login',
-        name: 'login',
-        component: () => import('@/views/pages/auth/Login.vue')
-    },
-    {
-        path: '/auth/access',
-        name: 'accessDenied',
-        component: () => import('@/views/pages/auth/AccessDenied.vue')
-    },
-    {
-        path: '/auth/error',
-        name: 'error',
-        component: () => import('@/views/pages/auth/Error.vue')
-    },
-    {
         path: '/auth/register',
         name: 'register',
-        component: () => import('@/views/pages/auth/Register.vue')
+        component: () => import('@/features/auth/components/Signup.vue')
     },
     {
-        path: '/auth/forgotpassword',
-        name: 'forgotpassword',
-        component: () => import('@/views/pages/auth/ForgotPassword.vue')
+        path: '/auth/login',
+        name: 'login',
+        component: () => import('@/features/auth/components/Login.vue')
     },
     {
-        path: '/auth/newpassword',
-        name: 'newpassword',
-        component: () => import('@/views/pages/auth/NewPassword.vue')
+        path: '/auth/logout',
+        name: 'logout',
+        meta: { requiresAuth: true },
+        component: () => import('@/features/auth/components/Logout.vue')
     },
-    {
-        path: '/auth/verification',
-        name: 'verification',
-        component: () => import('@/views/pages/auth/Verification.vue')
-    },
-    {
-        path: '/auth/lockscreen',
-        name: 'lockscreen',
-        component: () => import('@/views/pages/auth/LockScreen.vue')
-    },
+    // {
+    //     path: '/auth/access',
+    //     name: 'accessDenied',
+    //     component: () => import('@/views/pages/auth/AccessDenied.vue')
+    // },
+    // {
+    //     path: '/auth/error',
+    //     name: 'error',
+    //     component: () => import('@/views/pages/auth/Error.vue')
+    // },
+    // {
+    //     path: '/auth/forgotpassword',
+    //     name: 'forgotpassword',
+    //     component: () => import('@/views/pages/auth/ForgotPassword.vue')
+    // },
+    // {
+    //     path: '/auth/newpassword',
+    //     name: 'newpassword',
+    //     component: () => import('@/views/pages/auth/NewPassword.vue')
+    // },
+    // {
+    //     path: '/auth/verification',
+    //     name: 'verification',
+    //     component: () => import('@/views/pages/auth/Verification.vue')
+    // },
+    // {
+    //     path: '/auth/lockscreen',
+    //     name: 'lockscreen',
+    //     component: () => import('@/views/pages/auth/LockScreen.vue')
+    // },
     // {
     //     path: '/:pathMatch(.*)*',
     //     name: 'notfound',
@@ -621,6 +630,19 @@ const router = createRouter({
     routes,
     scrollBehavior() {
         return { left: 0, top: 0 };
+    }
+});
+
+router.beforeEach((to, from, next) => {
+    console.log(authStore.getters['authentication/isAuthenticated']);
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (!authStore.getters['authentication/isAuthenticated']) {
+            next({ name: 'login' })
+        } else {
+            next();
+        }
+    } else {
+        next();
     }
 });
 

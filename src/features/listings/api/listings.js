@@ -1,63 +1,35 @@
 import { ref } from 'vue';
-
  
-
 import {ListingsUrls} from './listings-constants.js';
-
 import BackendApis from '@/utils/backend-apis.js';
 
- 
 
 export default class Listings {
 
- 
-
   /**
-
   * Gets NBR table data.
-
   *
-
   * @static
-
   * @returns {Array} Returns the table data.
-
   */
-
   static async getData() {
-
     let listings_data = await BackendApis.axiosGet(ListingsUrls.GET_DATA_URL);
-
     return listings_data;
-
   }
 
- 
-
 //   /**
-
 //   * Updates NBR cell.
-
 //   *
-
 //   * @static
-
 //   * @param {Object} event Data from cell change.
-
 //   */
-
 //   static async editRow(rowDict) {
-
 //     await BackendApis.axiosPost(NbrUrls.EDIT_ROW_URL, {'rowData': rowDict});
-
 //   }
-
- 
 
 }
 
  
-
 // Nbr.FROZEN_COLUMNS_LEFT_REF = ref([
 
 //   { field: NbrColumns.NBR_ID, header: NbrHeaders.NBR_ID },

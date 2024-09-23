@@ -51,6 +51,9 @@ const goToCreateListing = () => {
 const goToSignIn = () => {
     router.push({ name: 'login' });
 };
+const goToSignOut = () => {
+    router.push({ name: 'logout' });
+};
 const goToCreateAccount = () => {
     router.push('/auth/register');
 };
@@ -93,9 +96,14 @@ const nestedMenuitems = ref([
         icon: 'pi pi-fw pi-user',
         items: [
             {
-                label: 'Sign In',
+                label: 'Login',
                 icon: 'pi pi-sign-in',
                 command: () => goToSignIn()
+            },
+            {
+                label: 'Logout',
+                icon: 'pi pi-sign-out',
+                command: () => goToSignOut()
             },
             {
                 label: 'Create Account',

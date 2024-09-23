@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
+import authStore from './features/auth/stores/auth-store';
 
 import PrimeVue from 'primevue/config';
 import AutoComplete from 'primevue/autocomplete';
@@ -117,7 +118,7 @@ import '@/assets/styles.scss';
 const app = createApp(App);
 
 // Surpress all warnings
-app.config.warnHandler = () => {};
+app.config.warnHandler = () => { };
 // app.use(PrimeVue, {
 //   theme: {
 //       preset: Noir,
@@ -130,6 +131,7 @@ app.config.warnHandler = () => {};
 // });
 
 app.use(router);
+app.use(authStore);
 app.use(PrimeVue, { ripple: true });
 app.use(ToastService);
 app.use(DialogService);
