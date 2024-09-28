@@ -1,17 +1,19 @@
 <script setup>
-import { ref } from 'vue';
-
-
-
-
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
-const route = useRoute();
-const listingId = route.query.listingId;
-console.log('Listing ID:', listingId);
-// Use `listingId` in your logic
+import { ListingsUrls } from '@/features/listings/api/listings-constants.js';
+import Listings from '@/features/listings/api/listings.js';
 
+onMounted(async() => {
+    const route = useRoute();
+    const listingId = route.query.listingId;
+    console.log('Listing ID:', listingId);
 
+    let listingData = await Listings.getListingData(listingId);
+    // filteredValue.value = listingData;
+    console.log(listingData);
+});
 
 
 const selectedImageIndex = ref(0);

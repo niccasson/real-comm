@@ -43,9 +43,9 @@ const productService = new ProductService();
 onMounted(async() => {
     productService.getProductsSmall().then((data) => (dataviewValue.value = data));
     productService.getProductsSmall().then((data) => (console.log(data)));
-    let listingData = await Listings.getData();
-    filteredValue.value = listingData;
-    console.log(listingData);
+    let listingsData = await Listings.getData();
+    filteredValue.value = listingsData;
+    console.log(listingsData);
 });
 
 const onSortChange = (event) => {

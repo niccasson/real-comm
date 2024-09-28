@@ -17,6 +17,19 @@ export default class Listings {
     return listings_data;
   }
 
+  /**
+  * Gets Listing row data.
+  *
+  * @static
+  * @param {Integer} listingId The ID of the listing.
+  * @returns {Array} Returns the row data.
+  */
+  static async getListingData(listingId) {
+    const GET_SPECIFIC_LISTING_DATA_URL = ListingsUrls.GET_LISTING_DATA_URL + listingId + '/';
+    let listing_data = await BackendApis.axiosGet(GET_SPECIFIC_LISTING_DATA_URL);
+    return listing_data;
+  }
+
 //   /**
 //   * Updates NBR cell.
 //   *
