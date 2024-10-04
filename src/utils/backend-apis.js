@@ -37,9 +37,9 @@ export default class BackendApis {
   * @param {Object} postData The data to submit to the url.
   */
   static async axiosPost(url, postData) {
-    console.log('permissions: ');
-    console.log(store.getters['authentication/userPermissions']);
-    axios.defaults.headers.common['Authorization'] = store.getters['authentication/userPermissions'];
+    // console.log('permissions: ');
+    // console.log(store.getters['authentication/userPermissions']);
+    // axios.defaults.headers.common['Authorization'] = store.getters['authentication/userPermissions'];
 
     return await axios.post(url, postData, {
       withCredentials: true,

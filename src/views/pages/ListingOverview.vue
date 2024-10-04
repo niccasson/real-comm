@@ -1,18 +1,47 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { ListingsUrls } from '@/features/listings/api/listings-constants.js';
 import Listings from '@/features/listings/api/listings.js';
+
+const listingData = reactive({});
+let filteredListingData = {};
 
 onMounted(async() => {
     const route = useRoute();
     const listingId = route.query.listingId;
     console.log('Listing ID:', listingId);
 
-    let listingData = await Listings.getListingData(listingId);
+    const currListData = await Listings.getListingData(listingId);
+    Object.assign(listingData, currListData);
+
+    // listingData.value = 
     // filteredValue.value = listingData;
     console.log(listingData);
+
+    const displayKeys = [
+        'annual_property_taxes',
+        'bathrooms',
+        'bedrooms',
+        'building_type',
+        'built_in',
+        'community_name',
+        'land_size',
+        'neighbourhood_name',
+        'parking_type',
+        'property_type',
+        'square_footage',
+        'storeys',
+        'title',
+    ];
+
+    // Filter listingData to only include the keys in displayKeys
+    filteredListingData = computed(() => {
+      return Object.fromEntries(
+        Object.entries(listingData).filter(([key]) => displayKeys.includes(key))
+      );
+    });
 });
 
 
@@ -56,9 +85,10 @@ const setSelectedImageIndex = (index) => {
                 </div>
             </div>
             <div class="col-12 lg:col-4 py-3 lg:pl-6">
-                <div class="flex align-items-center text-xl font-medium text-900 mb-4">Product Title Placeholder</div>
+                <div class="flex align-items-center text-xl font-medium text-900 mb-4">{{ listingData.address }}</div>
+                <div class="flex align-items-center text-xl font-medium text-900 mb-4">{{ listingData.city_town }}, {{ listingData.province }} {{ listingData.postal_code }}</div>
                 <div class="flex align-items-center justify-content-between mb-5">
-                    <span class="text-900 font-medium text-3xl block">$120</span>
+                    <span class="text-900 font-medium text-3xl block">${{ listingData.asking_price }}</span>
                     <div class="flex align-items-center">
                         <span class="mr-3">
                             <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
@@ -155,14 +185,26 @@ const setSelectedImageIndex = (index) => {
         </div>
 
         <TabView>
-            <TabPanel header="Details">
-                <div class="text-900 font-bold text-3xl mb-4 mt-2">Product Details</div>
+            <TabPanel header="Highlights">
+                <div class="text-900 font-bold text-3xl mb-4 mt-2">Listing Description</div>
                 <p class="line-height-3 text-600 p-0 mx-0 mt-0 mb-4">
-                    Volutpat maecenas volutpat blandit aliquam etiam erat velit scelerisque in. Duis ultricies lacus sed turpis tincidunt id. Sed tempus urna et pharetra. Metus vulputate eu scelerisque felis imperdiet proin fermentum. Venenatis urna
-                    cursus eget nunc scelerisque viverra mauris in. Viverra justo nec ultrices dui sapien eget mi proin. Laoreet suspendisse interdum consectetur libero id faucibus.
+                    {{ listingData.description }}
                 </p>
 
+                <div class="text-900 font-bold text-3xl mb-4 mt-2">Property Summary</div>
                 <div class="grid">
+                    <!-- Loop through the listingData keys and values -->
+                    <div v-for="(value, key) in filteredListingData" :key="key" class="col-12 lg:col-2">
+                      <span class="text-900 block font-medium mb-3 font-bold">{{ key }}</span>
+                      <ul class="py-0 pl-3 m-0 text-600 mb-3">
+                        <li class="mb-2">{{ value }}</li>
+                      </ul>
+                    </div>
+                </div>
+
+
+
+                <!-- <div class="grid">
                     <div class="col-12 lg:col-4">
                         <span class="text-900 block font-medium mb-3 font-bold">Highlights</span>
                         <ul class="py-0 pl-3 m-0 text-600 mb-3">
@@ -201,7 +243,7 @@ const setSelectedImageIndex = (index) => {
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
             </TabPanel>
             <TabPanel header="Reviews">
                 <div class="text-900 font-bold text-3xl mb-4 mt-2">Customer Reviews</div>

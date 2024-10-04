@@ -176,6 +176,7 @@
 
 const ListingsUrls = {
 
+    CREATE_LISTING_URL: 'http://localhost:8000/listings/create-listing/',
     GET_DATA_URL: 'http://localhost:8000/listings/get-data/',
     GET_LISTING_DATA_URL: 'http://localhost:8000/listings/get-listing/'
 

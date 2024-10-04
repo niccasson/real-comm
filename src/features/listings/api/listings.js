@@ -1,10 +1,54 @@
 import { ref } from 'vue';
  
-import {ListingsUrls} from './listings-constants.js';
+import { ListingsUrls } from './listings-constants.js';
 import BackendApis from '@/utils/backend-apis.js';
 
 
 export default class Listings {
+
+  static columns = [
+    'address',
+    'annual_property_taxes',
+    'asking_price',
+    'bathrooms',
+    'bedrooms',
+    'building_type',
+    'built_in',
+    'city_town',
+    'community_name',
+    'description',
+    'land_size',
+    'listing_id',
+    'media',
+    'neighbourhood_name',
+    'parking_type',
+    'postal_code',
+    'property_type',
+    'province',
+    'square_footage',
+    'storeys',
+    'title'
+  ];
+
+  /**
+  * Creates listing.
+  *
+  * @static
+  * @param {Object} listingData The listing data.
+  * @returns {Array} Returns the row data.
+  */
+  static async createListing(listingData) {
+    // const GET_SPECIFIC_LISTING_DATA_URL = ListingsUrls.GET_LISTING_DATA_URL + listingId + '/';
+    // const CREATE_LISTING_URL = ListingsUrls.CREATE_LISTING_URL + listingId + '/';
+    // let response = await BackendApis.axiosPost(ListingsUrls.CREATE_LISTING_URL);
+    // return listing_data;
+    try {
+      let response = await BackendApis.axiosPost(ListingsUrls.CREATE_LISTING_URL, listingData);
+      console.log('Response:', response.data)
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
 
   /**
   * Gets NBR table data.
@@ -29,6 +73,7 @@ export default class Listings {
     let listing_data = await BackendApis.axiosGet(GET_SPECIFIC_LISTING_DATA_URL);
     return listing_data;
   }
+
 
 //   /**
 //   * Updates NBR cell.
