@@ -111,6 +111,21 @@ export default class Listings {
     return bidData;
   }
 
+  /**
+  * Gets AWS image data.
+  *
+  * @static
+  * @param {Integer} listingId The ID of the listing.
+  * @returns {Array} Returns the aws images.
+  */
+  static async getAwsImages(listingId) {
+    // const GET_SPECIFIC_BID_DATA_URL = ListingsUrls.GET_BID_DATA_URL + listingId + '/';
+
+    let awsImages = await BackendApis.axiosGet(ListingsUrls.GET_AWS_IMAGES_URL + listingId + '/');
+    console.log(awsImages.images);
+    return awsImages.images;
+  }
+
 
   //   /**
   //   * Updates NBR cell.

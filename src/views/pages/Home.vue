@@ -168,7 +168,7 @@ const scrollTo = ($element) => {
 
                 <!-- <div class="flex align-items-center justify-content-between px-5 sm:px-8 py-6">
                     <a @click="navigateToDashboard" class="cursor-pointer">
-                        <span class="text-2xl font-bold text-color">VERONA</span>
+                        <span class="text-2xl font-bold text-color">REAL COMM</span>
                     </a>
                     <div class="relative">
                         <Button
@@ -214,7 +214,7 @@ const scrollTo = ($element) => {
                 </div> -->
                 <div class="flex flex-column lg:flex-row gap-5 align-items-center justify-content-between px-5 sm:px-8 py-8 overflow-hidden">
                     <div class="flex-1 fadein animation-duration-1000">
-                        <h1 class="font-bold text-7xl mt-0 mb-5">PrimeTek Presents Verona</h1>
+                        <h1 class="font-bold text-7xl mt-0 mb-5">PrimeTek Presents Real Comm</h1>
                         <p class="text-3xl mb-5 line-height-3">Minimal layout inspired by a beautiful city</p>
                         <Button label="TRY NOW"></Button>
                     </div>
@@ -497,7 +497,7 @@ const scrollTo = ($element) => {
             <div class="px-5 sm:px-8 py-8 bg-gray-900 flex flex-column md:flex-row md:align-items-start gap-5" style="border-top-left-radius: 14px; border-top-right-radius: 14px">
                 <div class="flex align-items-center flex-1">
                     <img alt="intro image" src="/demo/images/landing/logo-v.svg" class="w-4rem" />
-                    <span class="text-white text-5xl font-bold ml-2">Verona</span>
+                    <span class="text-white text-5xl font-bold ml-2">Real Comm</span>
                 </div>
                 <div class="flex-1">
                     <div class="text-xl text-gray-600 mb-4">LATEST</div>

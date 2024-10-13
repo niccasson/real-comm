@@ -91,7 +91,7 @@ const onMenuButtonClick = () => {
     <div class="layout-topbar">
         <router-link to="/" class="app-logo">
             <img alt="app logo" :src="logo" />
-            <span class="app-name">Verona</span>
+            <span class="app-name">Real Comm</span>
         </router-link>
 
         <button ref="menubutton" class="topbar-menubutton p-link" type="button" @click="onMenuButtonClick">

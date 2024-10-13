@@ -1,6 +1,6 @@
 {
-    "name": "verona-vue",
-    "version": "4.2.0",
+    "name": "real-comm",
+    "version": "1.0.0",
     "private": true,
     "scripts": {
         "dev": "vite",

@@ -42,8 +42,8 @@ const signup = () => {
 <template>
     <div class="surface-ground h-screen w-screen flex align-items-center justify-content-center">
         <div class="surface-card py-7 px-5 sm:px-7 shadow-2 flex flex-column w-11 sm:w-30rem" style="border-radius: 14px">
-            <h1 class="font-bold text-2xl mt-0 mb-2">VERONA</h1>
-            <p class="text-color-secondary mb-4">Welcome to the <strong>Verona Community</strong>, where the magic happens, sign up to continue.</p>
+            <h1 class="font-bold text-2xl mt-0 mb-2">REAL COMM</h1>
+            <p class="text-color-secondary mb-4">Welcome to the <strong>Real Comm Community</strong>, where the magic happens, sign up to continue.</p>
 
             <IconField iconPosition="left" class="mb-4">
                 <InputIcon class="pi pi-user" />

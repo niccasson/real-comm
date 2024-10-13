@@ -8,7 +8,7 @@ const { layoutConfig } = useLayout();
     <div class="layout-footer mt-auto">
         <div class="footer-start">
             <img :src="'/layout/images/logo-' + (layoutConfig.colorScheme.value === 'light' ? 'dark' : 'light') + '.png'" alt="logo" />
-            <span class="app-name">Verona</span>
+            <span class="app-name">Real Comm</span>
         </div>
         <div class="footer-right">
             <span>© Your Organization</span>

@@ -2,40 +2,66 @@
 import { ref, onMounted, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
 
-import { ListingsUrls } from '@/features/listings/api/listings-constants.js';
 import Listings from '@/features/listings/api/listings.js';
 
-
-// import { ProductService } from '@/service/ProductService';
-// const products = ref();
+const carouselResponsiveOptions = ref([
+    {
+        breakpoint: '1024px',
+        numVisible: 3,
+        numScroll: 3
+    },
+    {
+        breakpoint: '768px',
+        numVisible: 2,
+        numScroll: 2
+    },
+    {
+        breakpoint: '560px',
+        numVisible: 1,
+        numScroll: 1
+    }
+]);
+const galleriaResponsiveOptions = ref([
+    {
+        breakpoint: '1024px',
+        numVisible: 5
+    },
+    {
+        breakpoint: '960px',
+        numVisible: 4
+    },
+    {
+        breakpoint: '768px',
+        numVisible: 3
+    },
+    {
+        breakpoint: '560px',
+        numVisible: 1
+    }
+]);
 
 
 const listingData = reactive({});
 let filteredListingData = {};
 let isLoading = true;
 let currBidData = ref([]);
+const listingImages = ref([]);
+
+
+import { PhotoService } from '@/service/PhotoService';
+const photoService = new PhotoService();
+const images = ref([]);
 
 onMounted(async() => {
-    // ProductService.getProductsSmall().then((data) => (products.value = data));
     isLoading = true;
-
-    console.log('COLUMNS: ', Listings.BID_COLUMNS_REF);
 
     const route = useRoute();
     const listingId = route.query.listingId;
-    console.log('Listing ID:', listingId);
 
-
+    listingImages.value = await Listings.getAwsImages(listingId);
     currBidData.value = await Listings.getBidData(listingId);
-    console.log(currBidData.value);
-
-
     const currListData = await Listings.getListingData(listingId);
     Object.assign(listingData, currListData);
-
-    // listingData.value = 
-    // filteredValue.value = listingData;
-    console.log(listingData);
 
     const displayKeys = [
         'annual_property_taxes',
@@ -63,13 +89,9 @@ onMounted(async() => {
     isLoading = false;
 });
 
-
 const selectedImageIndex = ref(0);
-const liked = ref(false);
-const quantity = ref(1);
 const color = ref('bluegray');
 const size = ref('M');
-const images = ref(['product-overview-3-1.png', 'product-overview-3-2.png', 'product-overview-3-3.png', 'product-overview-3-4.png']);
 
 const setColor = (val) => {
     color.value = val;
@@ -87,20 +109,14 @@ const setSelectedImageIndex = (index) => {
         <div class="grid mb-7">
             <div class="col-12 lg:col-7">
                 <div class="flex">
-                    <div class="flex flex-column w-2 justify-content-between" :style="{ rowGap: '1rem' }">
-                        <img
-                            v-for="(image, i) in images"
-                            :alt="i"
-                            :key="i"
-                            :src="`/demo/images/ecommerce/productoverview/${image}`"
-                            class="w-full cursor-pointer border-2 border-transparent transition-colors transition-duration-150 border-round'"
-                            :class="{ 'border-primary': selectedImageIndex === i }"
-                            @click="setSelectedImageIndex(i)"
-                        />
-                    </div>
-                    <div class="pl-3 w-10 flex">
-                        <img :alt="images[selectedImageIndex]" :src="`/demo/images/ecommerce/productoverview/${images[selectedImageIndex]}`" class="w-full border-2 border-transparent border-round" />
-                    </div>
+                    <Galleria :value="listingImages" :responsiveOptions="galleriaResponsiveOptions" :numVisible="7" :circular="true" containerStyle="max-width: 800px; margin: auto">
+                        <template #item="slotProps">
+                            <img :src="slotProps.item" style="width: 100%; display: block" />
+                        </template>
+                        <template #thumbnail="slotProps">
+                            <img :src="slotProps.item" tyle="width: 100%; display: block;" />
+                        </template>
+                    </Galleria>
                 </div>
             </div>
             <div class="col-12 lg:col-4 py-3 lg:pl-6">
@@ -108,673 +124,15 @@ const setSelectedImageIndex = (index) => {
                 <div class="flex align-items-center text-xl font-medium text-900 mb-4">{{ listingData.city_town }}, {{ listingData.province }} {{ listingData.postal_code }}</div>
                 <div class="flex align-items-center justify-content-between mb-5">
                     <span class="text-900 font-medium text-3xl block">${{ listingData.asking_price }}</span>
-                    <div class="flex align-items-center">
-                        <span class="mr-3">
-                            <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
-                            <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
-                            <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
-                            <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
-                            <i class="pi pi-star text-600 mr-1"></i>
-                        </span>
-                        <span class="text-sm"> <b class="text-900 mr-1">24</b> <span class="text-500"></span>reviews </span>
-                    </div>
                 </div>
-
-                <!-- <div class="font-bold text-900 mb-3">Color</div> -->
-                <!-- <div class="flex align-items-center mb-5">
-                    <div
-                        class="w-2rem h-2rem flex-shrink-0 border-circle bg-bluegray-500 mr-3 cursor-pointer border-2 surface-border transition-all transition-duration-300"
-                        :style="{ boxShadow: color === 'bluegray' ? '0 0 0 0.2rem var(--bluegray-500)' : null }"
-                        @click="setColor('bluegray')"
-                    ></div>
-                    <div
-                        class="w-2rem h-2rem flex-shrink-0 border-circle bg-green-500 mr-3 cursor-pointer border-2 surface-border transition-all transition-duration-300"
-                        :style="{ boxShadow: color === 'green' ? '0 0 0 0.2rem var(--green-500)' : null }"
-                        @click="setColor('green')"
-                    ></div>
-                    <div
-                        class="w-2rem h-2rem flex-shrink-0 border-circle bg-blue-500 cursor-pointer border-2 surface-border transition-all transition-duration-300"
-                        :style="{ boxShadow: color === 'blue' ? '0 0 0 0.2rem var(--blue-500)' : null }"
-                        @click="setColor('blue')"
-                    ></div>
-                </div> -->
-
-                <!-- <div class="mb-3 flex align-items-center justify-content-between">
-                    <span class="font-bold text-900">Size</span>
-                    <a tabindex="0" class="cursor-pointer text-600 text-sm flex align-items-center"> Size Guide <i class="ml-1 pi pi-angle-right"></i> </a>
-                </div> -->
-                <!-- <div class="grid grid-nogutter align-items-center mb-5">
-                    <div
-                        class="col h-3rem border-1 border-300 text-900 inline-flex justify-content-center align-items-center flex-shrink-0 border-round mr-3 cursor-pointer hover:surface-100 transition-duration-150 transition-colors"
-                        :class="{ 'border-primary border-2 text-primary': size === 'XS' }"
-                        @click="setSize('XS')"
-                    >
-                        XS
-                    </div>
-                    <div
-                        class="col h-3rem border-1 border-300 text-900 inline-flex justify-content-center align-items-center flex-shrink-0 border-round mr-3 cursor-pointer hover:surface-100 transition-duration-150 transition-colors"
-                        :class="{ 'border-primary border-2 text-primary': size === 'S' }"
-                        @click="setSize('S')"
-                    >
-                        S
-                    </div>
-                    <div
-                        class="col h-3rem border-1 border-300 text-900 inline-flex justify-content-center align-items-center flex-shrink-0 border-round mr-3 cursor-pointer hover:surface-100 transition-duration-150 transition-colors"
-                        :class="{ 'border-primary border-2 text-primary': size === 'M' }"
-                        @click="setSize('M')"
-                    >
-                        M
-                    </div>
-                    <div
-                        class="col h-3rem border-1 border-300 text-900 inline-flex justify-content-center align-items-center flex-shrink-0 border-round mr-3 cursor-pointer hover:surface-100 transition-duration-150 transition-colors"
-                        :class="{ 'border-primary border-2 text-primary': size === 'L' }"
-                        @click="setSize('L')"
-                    >
-                        L
-                    </div>
-                    <div
-                        class="col h-3rem border-1 border-300 text-900 inline-flex justify-content-center align-items-center flex-shrink-0 border-round cursor-pointer hover:surface-100 transition-duration-150 transition-colors"
-                        :class="{ 'border-primary border-2 text-primary': size === 'XL' }"
-                        @click="setSize('XL')"
-                    >
-                        XL
-                    </div>
-                </div> -->
-
-                <!-- <div class="font-bold text-900 mb-3">Quantity</div> -->
                 <div class="flex flex-column sm:flex-row sm:align-items-center sm:justify-content-between">
-                    <InputNumber
-                        showButtons
-                        buttonLayout="horizontal"
-                        :min="0"
-                        inputClass="w-2rem text-center py-2 px-1 border-transparent outline-none shadow-none"
-                        v-model="quantity"
-                        class="border-1 surface-border border-round"
-                        decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                        incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1"
-                        incrementButtonIcon="pi pi-plus"
-                        decrementButtonIcon="pi pi-minus"
-                    ></InputNumber>
-                    <div class="flex align-items-center flex-1 mt-3 sm:mt-0 ml-0 sm:ml-5">
-                        <Button label="Add to Cart" class="flex-1 mr-5"></Button>
-                        <i class="pi text-2xl cursor-pointer" :class="{ 'pi-heart text-600': !liked, 'pi-heart-fill text-orange-500': liked }" @click="liked = !liked"></i>
-                    </div>
+                    <Button label="Place Bid" class="flex-1 mr-5"></Button>
                 </div>
-
-
-
-                <!-- <div class="card h-full"> -->
-                <!-- <h5>Leads By Region</h5>
-                <TabView class="p-0">
-                    <TabPanel header="Europe">
-                        <table class="w-full">
-                            <tbody>
-                                <tr>
-                                    <td class="py-1">🇮🇹 Italy</td>
-                                    <td><span class="font-bold">90</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-green-100 text-green-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-up"></i>
-                                            <span class="font-bold ml-1">12</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-100 text-700 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">LOW</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">🇫🇷 France</td>
-                                    <td><span class="font-bold">61</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-green-100 text-green-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-up"></i>
-                                            <span class="font-bold ml-1">8</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">🇩🇪 Germany</td>
-                                    <td><span class="font-bold">46</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-green-100 text-green-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-up"></i>
-                                            <span class="font-bold ml-1">5</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">🇳🇱 Netherlands</td>
-                                    <td><span class="font-bold">28</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">19</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-100 text-700 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">LOW</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">🇪🇸 Spain</td>
-                                    <td><span class="font-bold">17</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">7</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">🇧🇷 Brazil</td>
-                                    <td><span class="font-bold">37</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">7</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">🇲🇽 Mexico</td>
-                                    <td><span class="font-bold">27</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-green-100 text-green-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-up"></i>
-                                            <span class="font-bold ml-1">4</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </TabPanel>
-                    <TabPanel header="United States">
-                        <table class="w-full">
-                            <tbody>
-                                <tr>
-                                    <td class="py-1">California</td>
-                                    <td><span class="font-bold">79</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-green-100 text-green-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-up"></i>
-                                            <span class="font-bold ml-1">11</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Texas</td>
-                                    <td><span class="font-bold">71</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-green-100 text-green-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-up"></i>
-                                            <span class="font-bold ml-1">9</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-100 text-700 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">LOW</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Florida</td>
-                                    <td><span class="font-bold">55</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">15</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-100 text-700 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">LOW</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">New York</td>
-                                    <td><span class="font-bold">48</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">10</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Ohio</td>
-                                    <td><span class="font-bold">26</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">6</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">New York</td>
-                                    <td><span class="font-bold">48</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">10</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Ohio</td>
-                                    <td><span class="font-bold">26</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">6</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">California</td>
-                                    <td><span class="font-bold">79</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-green-100 text-green-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-up"></i>
-                                            <span class="font-bold ml-1">11</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Texas</td>
-                                    <td><span class="font-bold">71</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-green-100 text-green-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-up"></i>
-                                            <span class="font-bold ml-1">9</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-100 text-700 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">LOW</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Florida</td>
-                                    <td><span class="font-bold">55</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">15</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-100 text-700 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">LOW</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">New York</td>
-                                    <td><span class="font-bold">48</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">10</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Ohio</td>
-                                    <td><span class="font-bold">26</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">6</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">New York</td>
-                                    <td><span class="font-bold">48</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">10</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Ohio</td>
-                                    <td><span class="font-bold">26</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">6</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">California</td>
-                                    <td><span class="font-bold">79</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-green-100 text-green-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-up"></i>
-                                            <span class="font-bold ml-1">11</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Texas</td>
-                                    <td><span class="font-bold">71</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-green-100 text-green-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-up"></i>
-                                            <span class="font-bold ml-1">9</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-100 text-700 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">LOW</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Florida</td>
-                                    <td><span class="font-bold">55</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">15</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-100 text-700 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">LOW</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">New York</td>
-                                    <td><span class="font-bold">48</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">10</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Ohio</td>
-                                    <td><span class="font-bold">26</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">6</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">New York</td>
-                                    <td><span class="font-bold">48</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">10</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Ohio</td>
-                                    <td><span class="font-bold">26</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">6</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">California</td>
-                                    <td><span class="font-bold">79</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-green-100 text-green-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-up"></i>
-                                            <span class="font-bold ml-1">11</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Texas</td>
-                                    <td><span class="font-bold">71</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-green-100 text-green-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-up"></i>
-                                            <span class="font-bold ml-1">9</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-100 text-700 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">LOW</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Florida</td>
-                                    <td><span class="font-bold">55</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">15</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-100 text-700 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">LOW</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">New York</td>
-                                    <td><span class="font-bold">48</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">10</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Ohio</td>
-                                    <td><span class="font-bold">26</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">6</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">New York</td>
-                                    <td><span class="font-bold">48</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">10</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Ohio</td>
-                                    <td><span class="font-bold">26</span></td>
-                                    <td class="text-right">
-                                        <div class="inline-flex align-items-center justify-content-between px-2 py-1 bg-red-100 text-red-900 border-round" style="min-width: 3.5rem">
-                                            <i class="pi pi-arrow-down"></i>
-                                            <span class="font-bold ml-1">6</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="inline-flex p-1 align-items-center justify-content-center surface-700 text-100 p-1 border-round text-sm" style="min-width: 4rem">
-                                            <span class="font-bold">HIGH</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </TabPanel>
-                </TabView> -->
-                <!-- </div> -->
-
-                <!-- <DataTable :value="customers" :size="small" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem">
-                    <Column field="name" header="Name" style="width: 25%"></Column>
-                    <Column field="country.name" header="Country" style="width: 25%"></Column>
-                    <Column field="company" header="Company" style="width: 25%"></Column>
-                    <Column field="representative.name" header="Representative" style="width: 25%"></Column>
-                </DataTable> -->
-
-
                 <h5>Bids</h5>
                 <DataTable :value="currBidData" :size="small" stripedRows paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" :sortField="Listings.BidColumns.BID_PRICE" :sortOrder="-1" tableStyle="min-width: 50rem" autoLayout="true">
-                    <!-- <template #header>
-                        <div class="flex flex-wrap gap-2 items-center justify-between">
-                            <IconField>
-                                <InputIcon>
-                                    <i class="pi pi-search" />
-                                </InputIcon>
-                                <InputText v-model="tableFilters['global'].value" placeholder="Search..." />
-                            </IconField>
-                        </div>
-                    </template> -->
-
-                    <!-- <template v-if="isLoading">
-                        <div>Loading data. Please wait.</div>
-                    </template> -->
-    
                     <template v-if="!currBidData.length">
                         <div>No data found.</div>
                     </template>    
-
                     <Column v-for="col in Listings.BID_DISPLAY_COLUMNS_REF.value" :key="col.field" :field="col.field" :header="col.header" sortable>
                     </Column>
                 </DataTable>
