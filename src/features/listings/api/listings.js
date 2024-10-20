@@ -75,7 +75,7 @@ export default class Listings {
   }
 
   /**
-  * Gets NBR table data.
+  * Gets listing table data.
   *
   * @static
   * @returns {Array} Returns the table data.
@@ -86,7 +86,7 @@ export default class Listings {
   }
 
   /**
-  * Gets Listing row data.
+  * Gets specific listing data.
   *
   * @static
   * @param {Integer} listingId The ID of the listing.
@@ -96,6 +96,21 @@ export default class Listings {
     const GET_SPECIFIC_LISTING_DATA_URL = ListingsUrls.GET_LISTING_DATA_URL + listingId + '/';
     let listingData = await BackendApis.axiosGet(GET_SPECIFIC_LISTING_DATA_URL);
     return listingData;
+  }
+
+  /**
+  * Places offer.
+  *
+  * @static
+  * @param {Object} bidData The bid data.
+  */
+  static async placeBid(bidData) {
+    try {
+      let response = await BackendApis.axiosPost(ListingsUrls.PLACE_BID_URL, bidData);
+      console.log('Response:', response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 
   /**

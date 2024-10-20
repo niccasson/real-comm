@@ -146,7 +146,7 @@ const viewListing = (listingId) => {
                                         <div class="flex flex-column gap-4 mt-4">
                                             <span class="text-2xl font-semibold text-900">${{ item.asking_price }}</span>
                                             <div class="flex gap-2">
-                                                <Button icon="pi pi-shopping-cart" label="Buy Now" class="flex-auto white-space-nowrap" @click="viewListing(item.listing_id)" />
+                                                <Button icon="pi pi-shopping-cart" label="View Listing" class="flex-auto white-space-nowrap" @click="viewListing(item.listing_id)" />
                                                 <Button icon="pi pi-heart" outlined></Button>
                                             </div>
                                         </div>

@@ -511,18 +511,17 @@ const routes = [
                 path: '/listings/listing-overview',
                 name: 'Listings Overview',
                 meta: {
-                    breadcrumb: ['Listings Overview']
+                    breadcrumb: ['Listings', 'Listings Overview']
                 },
                 component: () => import('@/views/pages/ListingOverview.vue'),
-                // children: [
-                //     {
-                //         path: '/listings/listing-overview',
-                //         meta: {
-                //             breadcrumb: ['Listings', 'Listing Overview']
-                //         },
-                //         component: () => import('@/views/pages/ListingOverview.vue')
-                //     }
-                // ]
+            },
+            {
+                path: '/listings/listing-overview/place-bid',
+                name: 'Place Bid',
+                meta: {
+                    breadcrumb: ['Listings', 'Listings Overview', 'Place Bid']
+                },
+                component: () => import('@/views/pages/ListingOverview.vue'),
             },
             {
                 path: '/create-listing',

@@ -3,6 +3,7 @@ import { ref, onMounted, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import Listings from '@/features/listings/api/listings.js';
+import DateTime from '@/utils/datetime.js';
 
 const carouselResponsiveOptions = ref([
     {
@@ -51,6 +52,8 @@ const listingImages = ref([]);
 import { PhotoService } from '@/service/PhotoService';
 const photoService = new PhotoService();
 const images = ref([]);
+
+const bidAmount = ref(0);
 
 onMounted(async() => {
     isLoading = true;
@@ -102,6 +105,16 @@ const setSize = (val) => {
 const setSelectedImageIndex = (index) => {
     selectedImageIndex.value = index;
 };
+
+// Method to handle button click
+const placeOffer = (listingId) => {
+    console.log('Button was clicked!');
+    console.log(listingData.listing_id);
+    console.log('Bid ammount: $', bidAmount.value);
+
+    const bidData = {listing_id: listingId, bid_price: bidAmount.value, bid_date: DateTime.getCurrentDateTime(), username: 'niccy'};
+    Listings.placeBid(bidData);
+};
 </script>
 
 <template>
@@ -124,10 +137,18 @@ const setSelectedImageIndex = (index) => {
                 <div class="flex align-items-center text-xl font-medium text-900 mb-4">{{ listingData.city_town }}, {{ listingData.province }} {{ listingData.postal_code }}</div>
                 <div class="flex align-items-center justify-content-between mb-5">
                     <span class="text-900 font-medium text-3xl block">${{ listingData.asking_price }}</span>
-                </div>
-                <div class="flex flex-column sm:flex-row sm:align-items-center sm:justify-content-between">
-                    <Button label="Place Bid" class="flex-1 mr-5"></Button>
-                </div>
+                </div>      
+                <Panel header="Place Bid" :toggleable="true">
+                    <div class="grid p-fluid">
+                        <div class="col-12 md:col-12">
+                            <InputGroup>
+                                <Button label="Bid" @click="placeOffer(listingData.listing_id)"/>
+                                <InputNumber v-model="bidAmount" placeholder="Price"/>
+                                <InputGroupAddon>$</InputGroupAddon>
+                            </InputGroup>
+                        </div>
+                    </div>
+                </Panel>
                 <h5>Bids</h5>
                 <DataTable :value="currBidData" :size="small" stripedRows paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" :sortField="Listings.BidColumns.BID_PRICE" :sortOrder="-1" tableStyle="min-width: 50rem" autoLayout="true">
                     <template v-if="!currBidData.length">

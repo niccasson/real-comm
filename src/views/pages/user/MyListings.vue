@@ -139,7 +139,7 @@ const viewListing = (listingId) => {
                                             <span class="text-xl font-semibold text-900">${{ item.price }}</span>
                                             <div class="flex flex-row-reverse md:flex-row gap-2">
                                                 <Button icon="pi pi-heart" outlined></Button>
-                                                <Button @click="viewListing(item.price)" icon="pi pi-shopping-cart" label="Buy Now" :disabled="item.inventoryStatus === 'OUTOFSTOCK'" class="flex-auto md:flex-initial white-space-nowrap"></Button>
+                                                <Button @click="viewListing(item.price)" icon="pi pi-shopping-cart" label="View Listing" :disabled="item.inventoryStatus === 'OUTOFSTOCK'" class="flex-auto md:flex-initial white-space-nowrap"></Button>
                                             </div>
                                         </div>
                                     </div>
@@ -174,7 +174,7 @@ const viewListing = (listingId) => {
                                         <div class="flex flex-column gap-4 mt-4">
                                             <span class="text-2xl font-semibold text-900">${{ item.price }}</span>
                                             <div class="flex gap-2">
-                                                <Button icon="pi pi-shopping-cart" label="Buy Now" :disabled="item.inventoryStatus === 'OUTOFSTOCK'" class="flex-auto white-space-nowrap" @click="viewListing(item.price)" />
+                                                <Button icon="pi pi-shopping-cart" label="View Listing" :disabled="item.inventoryStatus === 'OUTOFSTOCK'" class="flex-auto white-space-nowrap" @click="viewListing(item.price)" />
                                                 <Button icon="pi pi-heart" outlined></Button>
                                             </div>
                                         </div>
