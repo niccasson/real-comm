@@ -1,7 +1,8 @@
 import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
-import authStore from './features/auth/stores/auth-store';
+// import authStore from './features/auth/stores/auth-store_old';
 
 import PrimeVue from 'primevue/config';
 import AutoComplete from 'primevue/autocomplete';
@@ -116,6 +117,7 @@ import VirtualScroller from 'primevue/virtualscroller';
 import '@/assets/styles.scss';
 
 const app = createApp(App);
+const pinia = createPinia();
 
 // Surpress all warnings
 app.config.warnHandler = () => { };
@@ -130,8 +132,9 @@ app.config.warnHandler = () => { };
 //   }
 // });
 
+app.use(pinia);
 app.use(router);
-app.use(authStore);
+// app.use(authStore);
 app.use(PrimeVue, { ripple: true });
 app.use(ToastService);
 app.use(DialogService);

@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import AppConfig from '@/layout/AppConfig.vue';
 import { useRouter } from 'vue-router';
+import { authStore } from '@/features/auth/stores/auth-store.js';
 
 const router = useRouter();
 

@@ -1,15 +1,17 @@
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
+// import { useRouter } from 'vue-router';
+// import { useStore } from 'vuex';
+import { authStore } from '@/features/auth/stores/auth-store.js';
 
 import AppConfig from '@/layout/AppConfig.vue';
 
 const message = ref([]);
-const count = ref(0);
+// const count = ref(0);
+const authStoreInst = authStore();
 
-const router = useRouter();
-const store = useStore();
+// const router = useRouter();
+// const store = useStore();
 const username = ref('');
 const password = ref('');
 
@@ -21,21 +23,23 @@ const signup = () => {
         username: username.value,
         password: password.value
     };
-    store.dispatch('authentication/signup', signupDict)
-        .then(response => {
-            console.log('response.data.status:');
-            console.log(response.data.status);
-            const responseDataStatus = response.data.status;
-            if (responseDataStatus === 'success'){
-                console.log('Signup successful');
-                router.push('/'); 
-            } else {
-                message.value = [{ severity: 'error', detail: 'Error Message', content: 'Username already exists', id: count.value++ }]
-            }
-        })
-        .catch(err => {
-            console.error('Signup failed', err);
-        });
+
+    authStoreInst.signup(signupDict);
+    // store.dispatch('authentication/signup', signupDict)
+    //     .then(response => {
+    //         console.log('response.data.status:');
+    //         console.log(response.data.status);
+    //         const responseDataStatus = response.data.status;
+    //         if (responseDataStatus === 'success'){
+    //             console.log('Signup successful');
+    //             router.push('/'); 
+    //         } else {
+    //             message.value = [{ severity: 'error', detail: 'Error Message', content: 'Username already exists', id: count.value++ }]
+    //         }
+    //     })
+    //     .catch(err => {
+    //         console.error('Signup failed', err);
+    //     });
 };
 </script>
 

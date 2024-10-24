@@ -1,77 +1,99 @@
-import { createStore } from 'vuex';
-import authentication from '@/features/auth/api/authentication.js';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import { AuthUrls } from '@/features/auth/api/auth-constants.js';
 
+export const authStore = defineStore('auth', () => {
+    const isAuthenticated = ref(false);
+    const username = ref('');
+    const userPermissions = ref();
 
-const authStore = createStore({
-  modules: {
-    authentication
-  },
-  state: {
-    hideConfigButton: false,
-    isPinned: true,
-    showConfig: false,
-    sidebarType: "bg-white",
-    mcolor: "",
-    darkMode: false,
-    isNavFixed: false,
-    isAbsolute: false,
-    showNavs: true,
-    showSidenav: true,
-    showNavbar: true,
-    showFooter: true,
-    showMain: true,
-    layout: "default"
-  },
-  mutations: {
-    toggleConfigurator(state) {
-
-      state.showConfig = !state.showConfig;
-
-    },
-    navbarMinimize(state) {
-
-      const sidenav_show = document.querySelector(".g-sidenav-show");
-
-
-
-      if (sidenav_show.classList.contains("g-sidenav-hidden")) {
-
-        sidenav_show.classList.remove("g-sidenav-hidden");
-
-        sidenav_show.classList.add("g-sidenav-pinned");
-
-        state.isPinned = true;
-
-      } else {
-        sidenav_show.classList.add("g-sidenav-hidden");
-        sidenav_show.classList.remove("g-sidenav-pinned");
-        state.isPinned = false;
-      }
-    },
-    sidebarType(state, payload) {
-      state.sidebarType = payload;
-    },
-    navbarFixed(state) {
-      if (state.isNavFixed === false) {
-        state.isNavFixed = true;
-      } else {
-        state.isNavFixed = false;
-      }
+    function getIsAuthenticated() {
+        return isAuthenticated;
     }
-  },
-  actions: {
-    toggleSidebarColor({ commit }, payload) {
-      commit("sidebarType", payload);
+
+    function getUsername() {
+        return username;
     }
-  },
-  getters: {}
+
+    function getUserPermissions() {
+        return userPermissions;
+    }
+
+    // function setIsAuthenticated(authenticationState) {
+    //   isAuthenticated.value = authenticationState;
+    // }
+
+    // function setUsername(name) {
+    //   username.value = name;
+    // }
+
+    // function setUserPermissions(permissions) {
+    //   userPermissions = permissions;
+    // }
+
+    const router = useRouter();
+
+    function signup(signupDict) {
+        axios.post(AuthUrls.SIGNUP_USER_URL, signupDict, { withCredentials: true })
+            .then(response => {
+                const responseUsername = response.data.username;
+                const responsePermissions = response.data.permissions;
+                username.value = responseUsername;
+                userPermissions.value = responsePermissions;
+                isAuthenticated.value = true;
+                console.log(response);
+                console.log(response.data);
+                console.log('Registration successful');
+                router.push('/');
+            })
+            .catch(err => {
+                console.log('Signup failed', err);
+            });
+    }
+
+    function login(loginDict) {
+        axios
+            .post(AuthUrls.LOGIN_USER_URL, loginDict, { withCredentials: true })
+            .then((response) => {
+                const responseUsername = response.data.username;
+                const responsePermissions = response.data.permissions;
+                username.value = responseUsername;
+                userPermissions.value = responsePermissions;
+                isAuthenticated.value = true;
+                console.log(response);
+                console.log(response.data);
+                console.log('Login successful');
+                router.push('/');
+            })
+            .catch((err) => {
+                console.log('Login failed', err);
+            });
+    }
+
+    function logout() {
+        axios
+            .post(AuthUrls.LOGOUT_USER_URL, { withCredentials: true })
+            .then((response) => {
+                // delete axios.defaults.headers.common['Authorization'];
+                console.log(response);
+                console.log(response.data);
+            })
+            .catch((err) => {
+                console.log('Logout failed', err);
+            });
+    }
+
+    return {
+        getIsAuthenticated,
+        getUsername,
+        getUserPermissions,
+        // setIsAuthenticated,
+        // setUsername,
+        // setUserPermissions,
+        signup,
+        login,
+        logout,
+    };
 });
-
-authStore.subscribe((mutation, state) => {
-  localStorage.setItem('authenticationState', JSON.stringify(state.authentication));
-});
-
-authStore.commit('authentication/LOAD_STATE_FROM_LOCAL_STORAGE');
-
-
-export default authStore;

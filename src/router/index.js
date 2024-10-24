@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // import AppLayout from '@/layout/AppLayout.vue';
 import PageFrame from '@/layout/PageFrame.vue';
-import authStore from '@/features/auth/stores/auth-store';
+// import authStore from '@/features/auth/stores/auth-store';
+import { authStore } from '@/features/auth/stores/auth-store';
+
 
 const routes = [
     // {
@@ -633,9 +635,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    console.log(authStore.getters['authentication/isAuthenticated']);
+    const authStoreInst = authStore();
+    let isAuthenticated = authStoreInst.getIsAuthenticated();
+    console.log('isAuthenticated: ', isAuthenticated.value);
+    // console.log(authStore.getters['authentication/isAuthenticated']);
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (!authStore.getters['authentication/isAuthenticated']) {
+        if (!isAuthenticated.value) {
             next({ name: 'login' })
         } else {
             next();
