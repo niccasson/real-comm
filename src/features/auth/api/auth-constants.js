@@ -1,7 +1,11 @@
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const AuthUrls = {
-    SIGNUP_USER_URL: 'http://localhost:8000/auth/signup/',
-    LOGIN_USER_URL: 'http://localhost:8000/auth/login/',
-    LOGOUT_USER_URL: 'http://localhost:8000/auth/logout/',
+    auth: {
+        SIGNUP: `${BASE_URL}/auth/signup/`,
+        LOGIN: `${BASE_URL}/auth/login/`,
+        LOGOUT: `${BASE_URL}/auth/logout/`,
+    }
 };
 
 

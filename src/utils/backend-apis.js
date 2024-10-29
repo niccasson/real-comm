@@ -10,7 +10,7 @@ export default class BackendApis {
   *
   * @static
   * @param {String} url The url to perform the get request on.
-  * @returns {Array} Returns the requested data.
+  * @returns {Array<Object>} Returns the requested data.
   */
   static async axiosGet(url) {
     // console.log('permissions: ');

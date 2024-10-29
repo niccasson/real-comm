@@ -1,49 +1,23 @@
 <script setup>
 import { ref } from 'vue';
-// import { useRouter } from 'vue-router';
-// import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import { authStore } from '@/features/auth/stores/auth-store.js';
 
 import AppConfig from '@/layout/AppConfig.vue';
-// import BackendApis from '@/utils/backend-apis';
 
 const message = ref([]);
-// const count = ref(0);
 
-// const router = useRouter();
-// const store = useStore();
+const router = useRouter();
 const authStoreInst = authStore();
 const username = ref('');
 const password = ref('');
 
 const login = () => {
-
-    console.log(username.value);
-    console.log(password.value);
-
     let loginDict = {
         username: username.value,
         password: password.value
     };
-
-    authStoreInst.login(loginDict);
-
-
-    // store.dispatch('authentication/login', loginDict)
-    //     .then(response => {
-    //         console.log('response.data.status:');
-    //         console.log(response.data.status);
-    //         const responseDataStatus = response.data.status;
-    //         if (responseDataStatus === 'success'){
-    //             console.log('Login successful');
-    //             router.push('/'); 
-    //         } else {
-    //             message.value = [{ severity: 'error', detail: 'Error Message', content: 'Sign in failed', id: count.value++ }]
-    //         }
-    //     })
-    //     .catch(err => {
-    //         console.error('Login failed', err);
-    //     });
+    authStoreInst.login(router, loginDict);
 };
 </script>
 

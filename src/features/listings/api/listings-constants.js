@@ -1,14 +1,14 @@
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const ListingsUrls = {
-
-    CREATE_LISTING_URL: 'http://localhost:8000/listings/create-listing/',
-    GET_DATA_URL: 'http://localhost:8000/listings/get-data/',
-    GET_LISTING_DATA_URL: 'http://localhost:8000/listings/get-listing/',
-    PLACE_BID_URL: 'http://localhost:8000/listings/place-bid/',
-    GET_BID_DATA_URL: 'http://localhost:8000/listings/get-bids/',
-    GET_AWS_IMAGES_URL: 'http://localhost:8000/aws/list-images/'
-    // EDIT_ROW_URL: 'http://localhost:8000/new-building-request/edit-row/'
-
+    listings: {
+        CREATE: `${BASE_URL}/listings/create-listing/`,
+        GET_ALL: `${BASE_URL}/listings/get-listings/`,
+        GET_SINGLE: `${BASE_URL}/listings/get-listing/`,
+    },
+    aws: {
+        GET_IMAGES: `${BASE_URL}/aws/list-images/`
+    }
 };
-
 
 export { ListingsUrls };

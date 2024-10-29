@@ -1,9 +1,14 @@
 <script setup>
 import { ref, onMounted, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
-
-import Listings from '@/features/listings/api/listings.js';
 import DateTime from '@/utils/datetime.js';
+import { listingsStore } from '@/features/listings/stores/listings-store.js';
+import { bidsStore } from '@/features/bids/stores/bids-store.js';
+
+
+const listingsStoreInst = listingsStore();
+const bidsStoreInst = bidsStore();
+
 
 const carouselResponsiveOptions = ref([
     {
@@ -61,9 +66,9 @@ onMounted(async() => {
     const route = useRoute();
     const listingId = route.query.listingId;
 
-    listingImages.value = await Listings.getAwsImages(listingId);
-    currBidData.value = await Listings.getBidData(listingId);
-    const currListData = await Listings.getListingData(listingId);
+    listingImages.value = await listingsStoreInst.fetchAwsImages(listingId);
+    currBidData.value = await bidsStoreInst.fetchBidData(listingId);
+    const currListData = await listingsStoreInst.fetchListingData(listingId);
     Object.assign(listingData, currListData);
 
     const displayKeys = [
@@ -89,6 +94,10 @@ onMounted(async() => {
       );
     });
 
+    console.log(listingImages.value);
+    console.log(currBidData.value);
+    console.log(filteredListingData);
+
     isLoading = false;
 });
 
@@ -113,7 +122,7 @@ const placeOffer = (listingId) => {
     console.log('Bid ammount: $', bidAmount.value);
 
     const bidData = {listing_id: listingId, bid_price: bidAmount.value, bid_date: DateTime.getCurrentDateTime(), username: 'niccy'};
-    Listings.placeBid(bidData);
+    bidsStoreInst.placeBid(bidData);
 };
 </script>
 
@@ -150,11 +159,11 @@ const placeOffer = (listingId) => {
                     </div>
                 </Panel>
                 <h5>Bids</h5>
-                <DataTable :value="currBidData" :size="small" stripedRows paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" :sortField="Listings.BidColumns.BID_PRICE" :sortOrder="-1" tableStyle="min-width: 50rem" autoLayout="true">
+                <DataTable :value="currBidData" :size="small" stripedRows paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" :sortField="bidsStoreInst.columns.BID_PRICE" :sortOrder="-1" tableStyle="min-width: 50rem" autoLayout="true">
                     <template v-if="!currBidData.length">
                         <div>No data found.</div>
                     </template>    
-                    <Column v-for="col in Listings.BID_DISPLAY_COLUMNS_REF.value" :key="col.field" :field="col.field" :header="col.header" sortable>
+                    <Column v-for="col in bidsStoreInst.displayColumns" :key="col.field" :field="col.field" :header="col.header" sortable>
                     </Column>
                 </DataTable>
             </div>

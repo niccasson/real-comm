@@ -498,7 +498,7 @@ const routes = [
                     breadcrumb: ['Listings'],
                     requiresAuth: true
                 },
-                component: () => import('@/views/pages/Listings.vue'),
+                component: () => import('@/features/listings/components/Listings.vue'),
                 // children: [
                 //     {
                 //         path: '/listings/listing-overview',
@@ -515,33 +515,39 @@ const routes = [
                 meta: {
                     breadcrumb: ['Listings', 'Listings Overview']
                 },
-                component: () => import('@/views/pages/ListingOverview.vue'),
+                component: () => import('@/features/listings/components/ListingOverview.vue'),
             },
-            {
-                path: '/listings/listing-overview/place-bid',
-                name: 'Place Bid',
-                meta: {
-                    breadcrumb: ['Listings', 'Listings Overview', 'Place Bid']
-                },
-                component: () => import('@/views/pages/ListingOverview.vue'),
-            },
+            // {
+            //     path: '/listings/listing-overview/place-bid',
+            //     name: 'Place Bid',
+            //     meta: {
+            //         breadcrumb: ['Listings', 'Listings Overview', 'Place Bid']
+            //     },
+            //     component: () => import('@/views/pages/ListingOverview.vue'),
+            // },
             {
                 path: '/create-listing',
                 name: 'Create Listing',
                 meta: {
-                    breadcrumb: ['Create Listing']
+                    breadcrumb: ['Listings', 'Create Listing']
                 },
-                component: () => import('@/views/pages/CreateListing.vue')
+                component: () => import('@/features/listings/components/CreateListing.vue')
             },
             {
                 path: '/user/my-listings',
                 name: 'my-listings',
-                component: () => import('@/views/pages/user/MyListings.vue')
+                meta: {
+                    breadcrumb: ['Listings', 'My Listings']
+                },
+                component: () => import('@/features/listings/components/MyListings.vue')
             },
             {
                 path: '/user/saved-listings',
                 name: 'saved-listings',
-                component: () => import('@/views/pages/user/SavedListings.vue')
+                meta: {
+                    breadcrumb: ['Listings', 'Saved Listings']
+                },
+                component: () => import('@/features/listings/components/SavedListings.vue')
             }
         ]
     },
@@ -635,19 +641,49 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+
     const authStoreInst = authStore();
-    let isAuthenticated = authStoreInst.getIsAuthenticated();
-    console.log('isAuthenticated: ', isAuthenticated.value);
-    // console.log(authStore.getters['authentication/isAuthenticated']);
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (!isAuthenticated.value) {
-            next({ name: 'login' })
-        } else {
-            next();
-        }
-    } else {
-        next();
+    authStoreInst.loadAuthData(); // Load auth state from local storage
+
+    // Check if the route requires authentication
+    if (to.meta.requiresAuth && !authStoreInst.isAuthenticated) {
+        next({ name: 'login' });
     }
+
+    // If user is authenticated, check if data is expired
+    if (authStoreInst.isAuthenticated) {
+        const expirationTime = localStorage.getItem(authStoreInst.expirationKey);
+        if (!expirationTime || Date.now() > parseInt(expirationTime, 10)) {
+            authStoreInst.resetAuthState();
+            next({ name: 'login' });
+        }
+    }
+
+    next();
+
+
+
+    // const authStoreInst = authStore();
+    // let isAuthenticated = localStorage.getItem(authStoreInst.authStorageKey);  //authStoreInst.getIsAuthenticated();
+    // console.log('isAuthenticated (from localStorage): ', isAuthenticated);
+    // console.log(typeof (isAuthenticated));
+    // // console.log('isAuthenticated: ', isAuthenticated.value);
+    // if (to.matched.some(record => record.meta.requiresAuth)) {
+    //     if (isAuthenticated === null) {
+    //         console.log('Redirecting to login... ');
+    //         next({ name: 'login' });
+    //         // next();
+    //     } else if (isAuthenticated === 'false') {
+    //         console.log('Redirecting to login... ');
+    //         next({ name: 'login' });
+    //     } else {
+    //         console.log('User has access! ');
+    //         next();
+    //     }
+    // } else {
+    //     console.log('Auth not required!');
+    //     next();
+    // }
 });
 
 export default router;

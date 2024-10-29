@@ -1,6 +1,8 @@
 <script setup>
 import { ref, reactive, toRaw } from 'vue';
-import Listings from '@/features/listings/api/listings.js';
+import { listingsStore } from '@/features/listings/stores/listings-store.js';
+
+const listingsStoreInst = listingsStore();
 
 const countries = ref([
     { name: 'Australia', code: 'AU' },
@@ -46,7 +48,7 @@ function submitCreateListing() {
   console.log('Button clicked!');
   console.log(toRaw(createListingData));
   // Add your logic here
-  Listings.createListing(createListingData);
+  listingsStoreInst.createListing(createListingData);
 }
 </script>
 

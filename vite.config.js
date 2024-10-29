@@ -12,10 +12,10 @@ export default defineConfig(() => {
             }
         },
         build: {
-            sourcemap: true, // Enable source maps for production builds
+            sourcemap: false, // Disable source maps for production builds
         },
         server: {
-            sourcemap: true, // Enable source maps during development
+            sourcemap: false, // Enable source maps during development
         },
     };
 });

@@ -1,7 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { ProductService } from '@/service/ProductService';
-import Listings from '@/features/listings/api/listings';
+import { listingsStore } from '@/features/listings/stores/listings-store.js';
+
+
+const listingsStoreInst = listingsStore();
 
 const picklistValue = ref([
     [
@@ -43,7 +46,7 @@ const productService = new ProductService();
 onMounted(async() => {
     productService.getProductsSmall().then((data) => (dataviewValue.value = data));
     productService.getProductsSmall().then((data) => (console.log(data)));
-    let listingsData = await Listings.getData();
+    let listingsData = await listingsStoreInst.fetchListings();
     filteredValue.value = listingsData;
     console.log(listingsData);
 });
