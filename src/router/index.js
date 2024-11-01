@@ -496,7 +496,7 @@ const routes = [
                 name: 'Listings',
                 meta: {
                     breadcrumb: ['Listings'],
-                    requiresAuth: true
+                    // requiresAuth: true
                 },
                 component: () => import('@/features/listings/components/Listings.vue'),
                 // children: [
@@ -529,7 +529,8 @@ const routes = [
                 path: '/create-listing',
                 name: 'Create Listing',
                 meta: {
-                    breadcrumb: ['Listings', 'Create Listing']
+                    breadcrumb: ['Listings', 'Create Listing'],
+                    requiresAuth: true
                 },
                 component: () => import('@/features/listings/components/CreateListing.vue')
             },

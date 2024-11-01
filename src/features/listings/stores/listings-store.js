@@ -29,6 +29,7 @@ export const listingsStore = defineStore('listings', {
         async fetchListings() {
             try {
                 const data = await BackendApis.axiosGet(ListingsUrls.listings.GET_ALL);
+                console.log(data);
                 return data; // Return the listings data
             } catch (error) {
                 console.error('Error fetching listings:', error);

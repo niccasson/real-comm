@@ -63,6 +63,27 @@ export const authStore = defineStore('auth', {
         },
 
         /**
+         * Saves authentication token to local storage.
+         */
+        saveAuthToken(authToken) {
+            localStorage.setItem('token', authToken);
+        },
+
+        /**
+         * Removes authentication token from local storage.
+         */
+        removeAuthToken(authToken) {
+            localStorage.removeItem('token');
+        },
+
+        /**
+         * Gets authentication status via token from local storage.
+         */
+        isAuthenticatedd() {
+            return localStorage.getItem('token') !== null;
+        },
+
+        /**
          * Handles user signup.
          * 
          * @param {Object} router - Router for user login.
@@ -90,11 +111,15 @@ export const authStore = defineStore('auth', {
          */
         async login(router, loginDict) {
             try {
-                const response = await axios.post(AuthUrls.auth.LOGIN, loginDict, { withCredentials: true });
-                this._username = response.data.username;
-                this._userPermissions = response.data.permissions;
-                this._isAuthenticated = true;
-                this.saveAuthData(); // Save data to local storage
+                console.log(loginDict);
+                const response = await axios.post(AuthUrls.LOGIN, loginDict);
+                console.log(response.data);
+                this.saveAuthToken(response.data.access);
+
+                // this._username = response.data.username;
+                // this._userPermissions = response.data.permissions;
+                // this._isAuthenticated = true;
+                // this.saveAuthData(); // Save data to local storage
                 console.log('Login successful');
                 console.log(router);
                 console.log(typeof (router));
