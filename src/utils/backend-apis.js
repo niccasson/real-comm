@@ -1,56 +1,79 @@
 import axios from 'axios';
-
 // import store from '../store';
-
+import authAxiosClient from '@/features/auth/api/auth-axios-client';
 
 export default class BackendApis {
-
   /**
-  * Performs axios GET request.
-  *
-  * @static
-  * @param {String} url The url to perform the get request on.
-  * @returns {Array<Object>} Returns the requested data.
-  */
+   * Performs axios GET request.
+   *
+   * @static
+   * @param {String} url - The URL to perform the GET request on.
+   * @returns {Array} Returns the requested data.
+   */
   static async axiosGet(url) {
-    // console.log('permissions: ');
-    // console.log(store.getters['authentication/userPermissions']);
-    // axios.defaults.headers.common['Authorization'] = store.getters['authentication/userPermissions'];
-
     let data = [];
-    await axios.get(url, {
-      withCredentials: false,
-    })
-      .then((response => {
-        data = response.data;
-      }), (error) => {
-        console.error(error);
-      });
+    await authAxiosClient
+      .get(url, {
+        withCredentials: true,
+      })
+      .then(
+        (response) => {
+          console.log('Sending axios request to: ', url);
+          data = response.data;
+        },
+        (error) => {
+          console.log('Error reading: ', error.response.data);
+          return error;
+        }
+      );
+
     return data;
   }
 
   /**
-  * Performs axios POST request.
-  *
-  * @static
-  * @param {String} url The url to submit post request to.
-  * @param {Object} postData The data to submit to the url.
-  */
+   * Performs axios POST request.
+   *
+   * @static
+   * @param {String} url - The URL to submit the POST request to.
+   * @param {Object} postData - The data to submit to the URL.
+   * @returns {Promise} The response or error from the POST request.
+   */
   static async axiosPost(url, postData) {
-    // console.log('permissions: ');
-    // console.log(store.getters['authentication/userPermissions']);
-    // axios.defaults.headers.common['Authorization'] = store.getters['authentication/userPermissions'];
+    return await authAxiosClient
+      .post(url, postData, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(
+        (response) => response,
+        (error) => {
+          console.log('Error creating: ', error.response.data);
+          return error;
+        }
+      );
+  }
 
-    return await axios.post(url, postData, {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((response) => {
-        return response;
-      }, (error) => {
-        return error;
-      });
+  /**
+   * Performs axios PUT request.
+   *
+   * @static
+   * @param {String} url - The URL to submit the PUT request to.
+   * @param {Object} putData - The data to submit to the URL.
+   * @returns {Promise} The response or error from the PUT request.
+   */
+  static async axiosPut(url, putData) {
+    return await authAxiosClient
+      .put(url, putData, {
+        withCredentials: true,
+      })
+      .then(
+        (response) => response,
+        (error) => {
+          console.log('Error updating: ', error.response.data);
+          return error;
+        }
+      );
   }
 }

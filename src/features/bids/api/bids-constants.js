@@ -1,10 +1,9 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+// const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const BidsUrls = {
-    bids: {
-        PLACE_BID: `${BASE_URL}/api/bids/place-bid/`,
-        GET_BIDS: `${BASE_URL}/api/bids/get-bids/`,
-    }
+    // PLACE_BID: `api/bids/place-bid/`,
+    GET_ALL: `api/bids/by-listing/`,
+    CREATE_SINGLE: `api/bids/`,
 };
 
 export { BidsUrls };

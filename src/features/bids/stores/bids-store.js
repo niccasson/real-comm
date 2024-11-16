@@ -43,7 +43,7 @@ export const bidsStore = defineStore('bids', {
     actions: {
         async placeBid(bidData) {
             try {
-                const response = await BackendApis.axiosPost(BidsUrls.bids.PLACE_BID, bidData);
+                const response = await BackendApis.axiosPost(BidsUrls.CREATE_SINGLE, bidData);
                 console.log('Response:', response.data);
             } catch (error) {
                 console.error('Error placing bid:', error);
@@ -51,9 +51,10 @@ export const bidsStore = defineStore('bids', {
         },
 
         async fetchBidData(listingId) {
-            const GET_SPECIFIC_BID_DATA_URL = `${BidsUrls.bids.GET_BIDS}${listingId}/`;
+            const GET_LISTING_BID_DATA_URL = `${BidsUrls.GET_ALL}${listingId}/`;
+            console.log(GET_LISTING_BID_DATA_URL);
             try {
-                const bidData = await BackendApis.axiosGet(GET_SPECIFIC_BID_DATA_URL);
+                const bidData = await BackendApis.axiosGet(GET_LISTING_BID_DATA_URL);
                 return bidData;
             } catch (error) {
                 console.error('Error fetching bid data:', error);

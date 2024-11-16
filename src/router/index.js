@@ -1,8 +1,9 @@
+import { watch } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 // import AppLayout from '@/layout/AppLayout.vue';
 import PageFrame from '@/layout/PageFrame.vue';
 // import authStore from '@/features/auth/stores/auth-store';
-import { authStore } from '@/features/auth/stores/auth-store';
+import { authStore } from '@/features/auth/stores/auth-store.js';
 
 
 const routes = [
@@ -642,49 +643,24 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-
     const authStoreInst = authStore();
-    authStoreInst.loadAuthData(); // Load auth state from local storage
+    console.log(authStoreInst.isAuthenticated);
+
+
+    // watch(
+    //     () => authStoreInst.isAuthenticated,
+    //     (newValue, oldValue) => {
+    //         console.log(`isAuthenticated changed from ${oldValue} to ${newValue}`);
+    //         console.trace(); // Prints the stack trace to see where the change occurred.
+    //     }
+    // );
 
     // Check if the route requires authentication
     if (to.meta.requiresAuth && !authStoreInst.isAuthenticated) {
         next({ name: 'login' });
     }
 
-    // If user is authenticated, check if data is expired
-    if (authStoreInst.isAuthenticated) {
-        const expirationTime = localStorage.getItem(authStoreInst.expirationKey);
-        if (!expirationTime || Date.now() > parseInt(expirationTime, 10)) {
-            authStoreInst.resetAuthState();
-            next({ name: 'login' });
-        }
-    }
-
     next();
-
-
-
-    // const authStoreInst = authStore();
-    // let isAuthenticated = localStorage.getItem(authStoreInst.authStorageKey);  //authStoreInst.getIsAuthenticated();
-    // console.log('isAuthenticated (from localStorage): ', isAuthenticated);
-    // console.log(typeof (isAuthenticated));
-    // // console.log('isAuthenticated: ', isAuthenticated.value);
-    // if (to.matched.some(record => record.meta.requiresAuth)) {
-    //     if (isAuthenticated === null) {
-    //         console.log('Redirecting to login... ');
-    //         next({ name: 'login' });
-    //         // next();
-    //     } else if (isAuthenticated === 'false') {
-    //         console.log('Redirecting to login... ');
-    //         next({ name: 'login' });
-    //     } else {
-    //         console.log('User has access! ');
-    //         next();
-    //     }
-    // } else {
-    //     console.log('Auth not required!');
-    //     next();
-    // }
 });
 
 export default router;
