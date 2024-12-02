@@ -514,7 +514,8 @@ const routes = [
                 path: '/listings/listing-overview',
                 name: 'Listings Overview',
                 meta: {
-                    breadcrumb: ['Listings', 'Listings Overview']
+                    breadcrumb: ['Listings', 'Listings Overview'],
+                    // requiresAuth: true
                 },
                 component: () => import('@/features/listings/components/ListingOverview.vue'),
             },
@@ -644,7 +645,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const authStoreInst = authStore();
+    console.log(to.meta.requiresAuth);
     console.log(authStoreInst.isAuthenticated);
+    console.log(to.meta.requiresAuth && !authStoreInst.isAuthenticated);
 
 
     // watch(
@@ -657,6 +660,7 @@ router.beforeEach((to, from, next) => {
 
     // Check if the route requires authentication
     if (to.meta.requiresAuth && !authStoreInst.isAuthenticated) {
+        console.log('User not authenticated, redirecting to login...');
         next({ name: 'login' });
     }
 

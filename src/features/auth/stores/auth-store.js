@@ -5,19 +5,29 @@ import { jwtDecode } from 'jwt-decode';
 
 export const authStore = defineStore('auth', {
     state: () => ({
-        _userId: null,
-        _username: '',
-        _userPermissions: {},
-        _isAuthenticated: false,
+        // _userId: null,
+        // _username: '',
+        // _userPermissions: {},
+        // _isAuthenticated: false,
     }),
 
     getters: {
-        userId: (state) => state._userId,
-        username: (state) => state._username,
-        userPermissions: (state) => state._userPermissions,
-        isAuthenticated: (state) => state._isAuthenticated,
+        // userId: (state) => state._userId,
+        // username: (state) => state._username,
+        // userPermissions: (state) => state._userPermissions,
+        isAuthenticatedStorageKey: () => 'is_authenticated',
+        userIdStorageKey: () => 'user_id',
         accessTokenStorageKey: () => 'access_token',
         refreshTokenStorageKey: () => 'refresh_token',
+        isAuthenticated() {
+            return JSON.parse(localStorage.getItem(this.isAuthenticatedStorageKey));
+        },
+        userId() {
+            return document.cookie.replace(
+                /(?:(?:^|.*;\s*)user_id\s*\=\s*([^;]*).*$)|^.*$/,
+                "$1"
+            );
+        }
     },
 
     actions: {
@@ -34,10 +44,12 @@ export const authStore = defineStore('auth', {
                 console.log(user_id);
                 console.log(token_type);
 
-                this._userId = user_id;
+                // this._userId = user_id;
                 // this._username = username;
                 // this._userPermissions = permissions;
-                this._isAuthenticated = true;
+                // this._isAuthenticated = true;
+                this.saveUserId(user_id);
+                localStorage.setItem(this.isAuthenticatedStorageKey, JSON.stringify(true));
             } else {
                 console.log('Access token not found in local storage, resetting auth state.');
                 this.resetAuthState();
@@ -48,11 +60,14 @@ export const authStore = defineStore('auth', {
          * Resets authentication state and clears access token from local storage.
          */
         resetAuthState() {
-            this._userId = null;
-            this._username = '';
-            this._userPermissions = {};
-            this._isAuthenticated = false;
-            localStorage.removeItem(this.accessTokenStorageKey);
+            // this._userId = null;
+            // this._username = '';
+            // this._userPermissions = {};
+            // this._isAuthenticated = false;
+            localStorage.setItem(this.isAuthenticatedStorageKey, JSON.stringify(false));
+            this.removeAccessToken();
+            this.removeRefreshToken();
+            this.removeUserId();
         },
 
         /**
@@ -70,10 +85,31 @@ export const authStore = defineStore('auth', {
         },
 
         /**
+         * Saves user id to coookies.
+         */
+        saveUserId(userId) {
+            document.cookie = `${this.userIdStorageKey}=${userId}; path=/;`;
+        },
+
+        /**
          * Removes access token from local storage.
          */
         removeAccessToken() {
             localStorage.removeItem(this.accessTokenStorageKey);
+        },
+
+        /**
+         * Removes refresh token from cookies.
+         */
+        removeRefreshToken() {
+            document.cookie = `${this.refreshTokenStorageKey}=; path=/;`;
+        },
+
+        /**
+         * Removes user id from cookies.
+         */
+        removeUserId() {
+            document.cookie = `${this.userIdStorageKey}=; path=/;`;
         },
 
         /**
@@ -87,6 +123,7 @@ export const authStore = defineStore('auth', {
                 this.resetAuthState();
 
                 const response = await axios.post(AuthUrls.LOGIN, loginDict);
+                console.log(response.data);
                 const { access, refresh } = response.data;
                 this.saveAccessToken(access);
                 this.saveRefreshToken(refresh);
@@ -106,7 +143,7 @@ export const authStore = defineStore('auth', {
          */
         async logout(router) {
             try {
-                await axios.post(AuthUrls.auth.LOGOUT, { withCredentials: true });
+                // await axios.post(AuthUrls.auth.LOGOUT, { withCredentials: true });
                 this.resetAuthState();
                 console.log('Logout successful');
                 router.push('/');

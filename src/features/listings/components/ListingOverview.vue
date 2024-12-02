@@ -1,11 +1,15 @@
 <script setup>
 import { ref, onMounted, reactive, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import DateTime from '@/utils/datetime.js';
+import { authStore } from '@/features/auth/stores/auth-store.js';
 import { listingsStore } from '@/features/listings/stores/listings-store.js';
 import { bidsStore } from '@/features/bids/stores/bids-store.js';
 
 
+const router = useRouter();
+const authStoreInst = authStore();
 const listingsStoreInst = listingsStore();
 const bidsStoreInst = bidsStore();
 
@@ -49,9 +53,12 @@ const galleriaResponsiveOptions = ref([
 
 const listingData = reactive({});
 let filteredListingData = {};
+const listingImages = ref([]);
+
 let isLoading = true;
 let currBidData = ref([]);
-const listingImages = ref([]);
+let isCollapsed = ref(true);
+const displayLoginRequired = ref(false);
 
 
 import { PhotoService } from '@/service/PhotoService';
@@ -69,7 +76,9 @@ onMounted(async() => {
     listingImages.value = await listingsStoreInst.fetchAwsImages(listingId);
     currBidData.value = await bidsStoreInst.fetchBidData(listingId);
     const currListData = await listingsStoreInst.fetchListingData(listingId);
+    console.log('Listing data: ', currListData);
     Object.assign(listingData, currListData);
+    console.log(listingData);
 
     const displayKeys = [
         'annual_property_taxes',
@@ -97,6 +106,7 @@ onMounted(async() => {
     console.log(listingImages.value);
     console.log(currBidData.value);
     console.log(filteredListingData);
+    
 
     isLoading = false;
 });
@@ -115,10 +125,46 @@ const setSelectedImageIndex = (index) => {
     selectedImageIndex.value = index;
 };
 
+
+
+const goToLoginPage = () => {
+    router.push({ name: 'login' });
+};
+
+// const closeLoginRequired = () => {
+//     displayLoginRequired.value = false;
+// };
+
+// // Handle panel toggle
+// const handleToggle = () => {
+//     if (!authStoreInst.isAuthenticated) {
+//         openLoginRequired();
+//         console.log("You must be logged in to toggle the panel.");
+//         isCollapsed.value = true;
+//         return;
+//     }
+//     // Toggle the collapsed state
+//     isCollapsed.value = !isCollapsed.value;
+// };
+
+// const confirm = (event) => {
+//     confirmPopup.require({
+//         target: event.target,
+//         message: 'Are you sure you want to proceed?',
+//         icon: 'pi pi-exclamation-triangle',
+//         accept: () => {
+//             toast.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+//         },
+//         reject: () => {
+//             toast.add({ severity: 'info', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+//         }
+//     });
+// };
+
 // Method to handle button click
 const placeOffer = (listingId) => {
     console.log('Button was clicked!');
-    console.log(listingData.listing_id);
+    console.log('listing_id: ', listingData.listing_id);
     console.log('Bid ammount: $', bidAmount.value);
 
     const bidData = {listing_id: listingId, bid_price: bidAmount.value, bid_date: DateTime.getCurrentDateTime(), username: 'niccy'};
@@ -147,15 +193,22 @@ const placeOffer = (listingId) => {
                 <div class="flex align-items-center justify-content-between mb-5">
                     <span class="text-900 font-medium text-3xl block">${{ listingData.asking_price }}</span>
                 </div>      
-                <Panel header="Place Bid" :toggleable="true">
-                    <div class="grid p-fluid">
+                <Panel header="Place Bid" :toggleable="true" v-model:collapsed="isCollapsed" @toggle="handleToggle">
+                    <div v-if="authStoreInst.isAuthenticated" class="grid p-fluid">
                         <div class="col-12 md:col-12">
                             <InputGroup>
-                                <Button label="Bid" @click="placeOffer(listingData.listing_id)"/>
-                                <InputNumber v-model="bidAmount" placeholder="Price"/>
+                                <Button label="Bid" @click="placeOffer(listingData.listing_id)" />
+                                <InputNumber v-model="bidAmount" placeholder="Price" />
                                 <InputGroupAddon>$</InputGroupAddon>
                             </InputGroup>
                         </div>
+                    </div>
+                    <div v-else class="grid p-fluid">
+                        <div class="flex align-items-center py-5 px-3">
+                            <i class="pi pi-fw pi-user mr-2 text-2xl" />
+                            <p class="m-0 text-lg">You must be logged in to place a bid.</p>
+                        </div>
+                        <Button label="Login" @click="goToLoginPage" />
                     </div>
                 </Panel>
                 <h5>Bids</h5>
